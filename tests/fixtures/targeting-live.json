@@ -1,0 +1,875 @@
+{
+  "description": "Public WebTiles events from disposable targeting-check, Artificer seed42. Actual iceblast menu, area previews, empty-square/stone-statue cursor moves and cancellation at turn0. Map cells retain only public cursor/preview-relevant fields; no game internals.",
+  "frames": [
+    {
+      "input": null,
+      "events": [
+        {
+          "msg": "player",
+          "hp": 16,
+          "hp_max": 16,
+          "turn": 0,
+          "pos": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "msg": "msgs",
+          "messages": [
+            {
+              "text": "<yellow>Welcome, Target the Minotaur Artificer.<lightgrey>",
+              "turn": 0,
+              "channel": 0
+            },
+            {
+              "text": "<white>Game seed: 42 (custom seed)<lightgrey><lightgrey>; </lightgrey><lightgrey>",
+              "turn": 0,
+              "channel": 0
+            },
+            {
+              "text": "<lightgrey>Press <white>?<lightgrey> for a list of commands and other information.",
+              "turn": 0,
+              "channel": 0
+            }
+          ]
+        },
+        {
+          "msg": "map",
+          "clear": true,
+          "cells": [
+            {
+              "x": -2,
+              "y": -6
+            },
+            {},
+            {},
+            {
+              "x": -2,
+              "y": -5,
+              "t": {
+                "bg": 1243
+              }
+            },
+            {
+              "t": {
+                "bg": 2794
+              }
+            },
+            {
+              "t": {
+                "bg": 1246
+              }
+            },
+            {
+              "t": {
+                "bg": 1244
+              }
+            },
+            {
+              "x": -3,
+              "y": -4,
+              "t": {
+                "bg": 1246
+              }
+            },
+            {
+              "t": {
+                "bg": 1243
+              }
+            },
+            {
+              "t": {
+                "bg": 4,
+                "ov": [
+                  2716,
+                  2718
+                ]
+              }
+            },
+            {
+              "t": {
+                "bg": 2913,
+                "ov": [
+                  2718,
+                  2720
+                ]
+              }
+            },
+            {
+              "t": {
+                "bg": 1246
+              }
+            },
+            {
+              "x": -4,
+              "y": -3
+            },
+            {
+              "t": {
+                "bg": 1244
+              }
+            },
+            {
+              "t": {
+                "bg": 2,
+                "ov": [
+                  2716,
+                  2718
+                ]
+              }
+            },
+            {
+              "t": {
+                "bg": 6,
+                "ov": [
+                  2717
+                ]
+              }
+            },
+            {
+              "t": {
+                "bg": 8,
+                "ov": [
+                  2720
+                ]
+              }
+            },
+            {
+              "t": {
+                "bg": 1246
+              }
+            },
+            {
+              "x": -4,
+              "y": -2
+            },
+            {
+              "t": {
+                "bg": 2794
+              }
+            },
+            {
+              "t": {
+                "bg": 3,
+                "ov": [
+                  2716
+                ]
+              }
+            },
+            {
+              "t": {
+                "bg": 5
+              }
+            },
+            {
+              "t": {
+                "bg": 6,
+                "ov": [
+                  2720
+                ]
+              }
+            },
+            {
+              "t": {
+                "bg": 1246
+              }
+            },
+            {
+              "x": -4,
+              "y": -1
+            },
+            {
+              "t": {
+                "bg": 1243
+              }
+            },
+            {
+              "t": {
+                "bg": 5,
+                "ov": [
+                  2716
+                ]
+              }
+            },
+            {
+              "t": {
+                "bg": 2
+              }
+            },
+            {
+              "t": {
+                "bg": 8,
+                "ov": [
+                  2720
+                ]
+              }
+            },
+            {
+              "t": {
+                "bg": 1243
+              }
+            },
+            {
+              "x": -3,
+              "y": 0,
+              "t": {
+                "bg": 1243
+              }
+            },
+            {
+              "t": {
+                "bg": 2898,
+                "ov": [
+                  2716
+                ]
+              }
+            },
+            {
+              "t": {
+                "bg": 4
+              }
+            },
+            {
+              "t": {
+                "fg": 531990,
+                "bg": 3096,
+                "ov": [
+                  2720
+                ]
+              }
+            },
+            {
+              "t": {
+                "bg": 1243
+              }
+            },
+            {
+              "x": -3,
+              "y": 1,
+              "t": {
+                "bg": 1243
+              }
+            },
+            {
+              "t": {
+                "bg": 1246
+              }
+            },
+            {
+              "t": {
+                "bg": 1246
+              }
+            },
+            {
+              "t": {
+                "bg": 1246
+              }
+            },
+            {
+              "t": {
+                "bg": 1244
+              }
+            }
+          ]
+        },
+        {
+          "msg": "cursor",
+          "id": 2
+        },
+        {
+          "msg": "input_mode",
+          "mode": 1
+        },
+        {
+          "msg": "msgs",
+          "messages": [
+            {
+              "text": "<lightgrey>Found a staircase leading out of the dungeon.",
+              "turn": 0,
+              "channel": 0
+            }
+          ]
+        },
+        {
+          "msg": "map",
+          "cells": [
+            {
+              "x": -2,
+              "y": -6
+            },
+            {},
+            {},
+            {
+              "x": -4,
+              "y": -3
+            },
+            {
+              "x": -4,
+              "y": -2
+            },
+            {
+              "x": -4,
+              "y": -1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input": {
+        "msg": "key",
+        "keycode": 86
+      },
+      "events": [
+        {
+          "msg": "input_mode",
+          "mode": 0
+        },
+        {
+          "msg": "menu",
+          "ui-centred": false,
+          "tag": "use_item",
+          "flags": 262722,
+          "last_hovered": 1,
+          "title": {
+            "text": "<white>Evoke which item?"
+          },
+          "more": "<lightgrey>\n                                                          [<white>?<lightgrey>] describe selected",
+          "alt_more": "<lightgrey>\n                                                          [<white>?<lightgrey>] describe selected",
+          "total_items": 4,
+          "chunk_start": 0,
+          "items": [
+            {
+              "text": "Wands",
+              "colour": 1,
+              "level": 1
+            },
+            {
+              "text": " a - a wand of flame (15) (quivered)",
+              "q": 1,
+              "hotkeys": [
+                97
+              ],
+              "level": 2,
+              "tiles": [
+                {
+                  "t": 4162,
+                  "tex": 4
+                },
+                {
+                  "t": 4163,
+                  "tex": 4
+                }
+              ]
+            },
+            {
+              "text": " c - a wand of iceblast (5)",
+              "q": 1,
+              "hotkeys": [
+                99
+              ],
+              "level": 2,
+              "tiles": [
+                {
+                  "t": 4161,
+                  "tex": 4
+                },
+                {
+                  "t": 4175,
+                  "tex": 4
+                }
+              ]
+            },
+            {
+              "text": " e - a wand of charming (15)",
+              "q": 1,
+              "hotkeys": [
+                101
+              ],
+              "level": 2,
+              "tiles": [
+                {
+                  "t": 4151,
+                  "tex": 4
+                },
+                {
+                  "t": 4179,
+                  "tex": 4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input": {
+        "msg": "key",
+        "keycode": 99
+      },
+      "events": [
+        {
+          "msg": "close_menu"
+        },
+        {
+          "msg": "close_all_menus"
+        },
+        {
+          "msg": "close_all_menus"
+        },
+        {
+          "msg": "map",
+          "cells": [
+            {
+              "x": -2,
+              "y": -6
+            },
+            {},
+            {},
+            {
+              "x": -4,
+              "y": -3
+            },
+            {
+              "x": -4,
+              "y": -2
+            },
+            {
+              "x": -4,
+              "y": -1
+            }
+          ]
+        },
+        {
+          "msg": "input_mode",
+          "mode": 4
+        },
+        {
+          "msg": "cursor",
+          "id": 0,
+          "loc": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "msg": "msgs",
+          "messages": [
+            {
+              "text": "<cyan>Aiming: <darkgrey>Iceblast<lightgrey>",
+              "turn": 0,
+              "channel": 2
+            },
+            {
+              "text": "<cyan>Press: ? - help, Shift-Dir - straight line<lightgrey>",
+              "turn": 0,
+              "channel": 2
+            }
+          ]
+        },
+        {
+          "msg": "map",
+          "cells": [
+            {
+              "x": -2,
+              "y": -6
+            },
+            {},
+            {},
+            {
+              "x": -4,
+              "y": -3
+            },
+            {
+              "x": -4,
+              "y": -2
+            },
+            {
+              "x": -4,
+              "y": -1
+            },
+            {
+              "x": -1,
+              "y": -1,
+              "t": {
+                "ov": [
+                  3533
+                ]
+              }
+            },
+            {
+              "t": {
+                "ov": [
+                  3533,
+                  2720
+                ]
+              }
+            },
+            {
+              "x": -1,
+              "y": 0,
+              "t": {
+                "ov": [
+                  3533
+                ]
+              }
+            },
+            {
+              "t": {
+                "ov": [
+                  3533,
+                  2720
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input": {
+        "msg": "target_cursor",
+        "x": -1,
+        "y": -3
+      },
+      "events": [
+        {
+          "msg": "cursor",
+          "id": 0,
+          "loc": {
+            "x": -1,
+            "y": -3
+          }
+        },
+        {
+          "msg": "msgs",
+          "rollback": 2,
+          "messages": [
+            {
+              "text": "<cyan>Aiming: <darkgrey>Iceblast<lightgrey>",
+              "turn": 0,
+              "channel": 2
+            },
+            {
+              "text": "<cyan>Press: ? - help, Shift-Dir - straight line<lightgrey>",
+              "turn": 0,
+              "channel": 2
+            }
+          ]
+        },
+        {
+          "msg": "map",
+          "cells": [
+            {
+              "x": -2,
+              "y": -6
+            },
+            {},
+            {},
+            {
+              "x": -1,
+              "y": -4,
+              "t": {
+                "ov": [
+                  3533,
+                  2716,
+                  2718
+                ]
+              }
+            },
+            {
+              "x": -4,
+              "y": -3
+            },
+            {
+              "x": -2,
+              "y": -3,
+              "t": {
+                "ov": [
+                  3533,
+                  2716,
+                  2718
+                ]
+              }
+            },
+            {
+              "t": {
+                "ov": [
+                  3533,
+                  2717
+                ]
+              }
+            },
+            {
+              "t": {
+                "ov": [
+                  3533,
+                  2720
+                ]
+              }
+            },
+            {
+              "x": -4,
+              "y": -2
+            },
+            {
+              "x": -2,
+              "y": -2,
+              "t": {
+                "ov": [
+                  3533,
+                  2716
+                ]
+              }
+            },
+            {
+              "t": {
+                "ov": [
+                  3533
+                ]
+              }
+            },
+            {
+              "t": {
+                "ov": [
+                  3533,
+                  2720
+                ]
+              }
+            },
+            {
+              "x": -4,
+              "y": -1
+            },
+            {
+              "x": -1,
+              "y": -1,
+              "t": {
+                "ov": []
+              }
+            },
+            {
+              "x": -1,
+              "y": 0,
+              "t": {
+                "ov": []
+              }
+            },
+            {
+              "t": {
+                "ov": [
+                  2720
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input": {
+        "msg": "target_cursor",
+        "x": 0,
+        "y": -4
+      },
+      "events": [
+        {
+          "msg": "cursor",
+          "id": 0,
+          "loc": {
+            "x": 0,
+            "y": -4
+          }
+        },
+        {
+          "msg": "msgs",
+          "rollback": 2,
+          "messages": [
+            {
+              "text": "<cyan>Aiming: <darkgrey>Iceblast<lightgrey>",
+              "turn": 0,
+              "channel": 2
+            },
+            {
+              "text": "<cyan>Press: ? - help, Shift-Dir - straight line<lightgrey>",
+              "turn": 0,
+              "channel": 2
+            }
+          ]
+        },
+        {
+          "msg": "map",
+          "cells": [
+            {
+              "x": -2,
+              "y": -6
+            },
+            {},
+            {},
+            {
+              "x": -4,
+              "y": -3
+            },
+            {
+              "x": -2,
+              "y": -3,
+              "t": {
+                "ov": [
+                  2716,
+                  2718
+                ]
+              }
+            },
+            {},
+            {
+              "x": -4,
+              "y": -2
+            },
+            {
+              "x": -2,
+              "y": -2,
+              "t": {
+                "ov": [
+                  2716
+                ]
+              }
+            },
+            {
+              "x": -4,
+              "y": -1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input": {
+        "msg": "key",
+        "keycode": 27
+      },
+      "events": [
+        {
+          "msg": "close_all_menus"
+        },
+        {
+          "msg": "cursor",
+          "id": 0
+        },
+        {
+          "msg": "map",
+          "cells": [
+            {
+              "x": -2,
+              "y": -6
+            },
+            {},
+            {},
+            {
+              "x": -1,
+              "y": -4,
+              "t": {
+                "ov": [
+                  2716,
+                  2718
+                ]
+              }
+            },
+            {
+              "x": -4,
+              "y": -3
+            },
+            {
+              "x": -1,
+              "y": -3,
+              "t": {
+                "ov": [
+                  2717
+                ]
+              }
+            },
+            {
+              "t": {
+                "ov": [
+                  2720
+                ]
+              }
+            },
+            {
+              "x": -4,
+              "y": -2
+            },
+            {
+              "x": -1,
+              "y": -2,
+              "t": {
+                "ov": []
+              }
+            },
+            {
+              "t": {
+                "ov": [
+                  2720
+                ]
+              }
+            },
+            {
+              "x": -4,
+              "y": -1
+            },
+            {
+              "x": 0,
+              "y": -1,
+              "t": {
+                "ov": [
+                  2720
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "msg": "input_mode",
+          "mode": 0
+        },
+        {
+          "msg": "input_mode",
+          "mode": 1
+        },
+        {
+          "msg": "msgs",
+          "messages": [
+            {
+              "text": "<cyan>Okay, then.<lightgrey>",
+              "turn": 0,
+              "channel": 2
+            }
+          ]
+        },
+        {
+          "msg": "map",
+          "cells": [
+            {
+              "x": -2,
+              "y": -6
+            },
+            {},
+            {},
+            {
+              "x": -4,
+              "y": -3
+            },
+            {
+              "x": -4,
+              "y": -2
+            },
+            {
+              "x": -4,
+              "y": -1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

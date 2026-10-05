@@ -1,0 +1,15 @@
+.crawl-agent/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+build/
+dist/
+*.egg-info/
+.DS_Store
+settings.ini
+
+# Keep workspace notes and the game outside this project.
+tasks/
+crawl-ref/
+vendor/

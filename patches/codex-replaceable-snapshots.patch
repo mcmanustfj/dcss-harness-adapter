@@ -1,0 +1,1043 @@
+diff --git a/codex-rs/config/src/config_toml.rs b/codex-rs/config/src/config_toml.rs
+index 9915de6b40cb46e207a363af4c7abd02e0c46d43..6dd0e457640f43b22fa51f994c179801b29affe2 100644
+--- a/codex-rs/config/src/config_toml.rs
++++ b/codex-rs/config/src/config_toml.rs
+@@ -433,6 +433,12 @@ pub struct ConfigToml {
+     /// `/v1/realtime`
+     /// connection) without changing normal provider HTTP requests.
+     pub experimental_realtime_ws_base_url: Option<String>,
++    /// Snapshot keys eligible for replacement in model requests: exact keys or prefixes with
++    /// one trailing `*` (for example, `crawl/*`; `*` matches all keys). Other glob/regex syntax
++    /// is unsupported. Replacement identity is always the full key. Disabled by default.
++    /// Saved transcripts remain intact; prompt caching may suffer.
++    #[serde(default)]
++    pub experimental_replaceable_tool_output_keys: Vec<String>,
+     /// Experimental / do not use. Overrides only the WebRTC realtime call
+     /// creation base URL. This is separate from `experimental_realtime_ws_base_url`
+     /// because WebRTC call creation is HTTP, while sideband control is websocket.
+diff --git a/codex-rs/core/config.schema.json b/codex-rs/core/config.schema.json
+index a3e5627aaccc33b0a9506218429e250ca294a5c6..cd1c71f73aa96ce6fe8ff85200ef6f485157d3ef 100644
+--- a/codex-rs/core/config.schema.json
++++ b/codex-rs/core/config.schema.json
+@@ -6715,6 +6715,14 @@
+       "description": "Experimental / do not use. Replaces the synthesized realtime startup context appended to websocket session instructions. An empty string disables startup context injection entirely.",
+       "type": "string"
+     },
++    "experimental_replaceable_tool_output_keys": {
++      "default": [],
++      "description": "Snapshot keys eligible for replacement in model requests: exact keys or prefixes with one trailing `*` (for example, `crawl/*`; `*` matches all keys). Other glob/regex syntax is unsupported. Replacement identity is always the full key. Disabled by default. Saved transcripts remain intact; prompt caching may suffer.",
++      "items": {
++        "type": "string"
++      },
++      "type": "array"
++    },
+     "experimental_thread_store": {
+       "allOf": [
+         {
+diff --git a/codex-rs/core/src/compact_remote_history.rs b/codex-rs/core/src/compact_remote_history.rs
+index aa7cd7607eeebef75a295a4409aa8f25dc2b2d6d..09b0b521c731a45e407fb9f62c680477dacbf000 100644
+--- a/codex-rs/core/src/compact_remote_history.rs
++++ b/codex-rs/core/src/compact_remote_history.rs
+@@ -77,8 +77,9 @@ pub(crate) fn trim_function_call_history_to_fit_context_window(
+     // saturation in the normal history estimator.
+     let base_tokens =
+         i128::try_from(approx_token_count(&base_instructions.text)).unwrap_or(i128::MAX);
++    let projected_items = history.projected_items();
+     let original_items = history.annotated_items();
+-    let mut estimated_tokens = history_item_groups(original_items.iter().map(|item| &item.item))
++    let mut estimated_tokens = history_item_groups(projected_items.iter().map(|item| &item.item))
+         .map(|group| group.estimated_token_count())
+         .fold(base_tokens, i128::saturating_add);
+     let initial_estimated_tokens = i64::try_from(estimated_tokens).unwrap_or(i64::MAX);
+@@ -108,6 +109,18 @@ pub(crate) fn trim_function_call_history_to_fit_context_window(
+             .saturating_add(i128::from(estimate_item_token_count(&rewritten_item.item)));
+         consumed_items += group_item_count;
+         rewritten_items.push(rewritten_item);
++        if !history.replaceable_tool_output_keys.is_empty() {
++            // Dropping the newest snapshot can expose an older complete map again.
++            // Reproject surviving raw evidence instead of retaining stale placeholders.
++            let mut candidate = history.clone();
++            let mut items = original_items[..original_items.len() - consumed_items].to_vec();
++            items.extend(rewritten_items.iter().rev().cloned());
++            candidate.replace_annotated(items);
++            estimated_tokens =
++                history_item_groups(candidate.projected_items().iter().map(|item| &item.item))
++                    .map(|group| group.estimated_token_count())
++                    .fold(base_tokens, i128::saturating_add);
++        }
+     }
+ 
+     let rewritten_outputs = rewritten_items.len();
+diff --git a/codex-rs/core/src/compact_remote_history_tests.rs b/codex-rs/core/src/compact_remote_history_tests.rs
+index c1dde7d9d67c56b070e28448485c4afe392f849b..b4563233ff69f615bbe28db66ef89bd0b0d113db 100644
+--- a/codex-rs/core/src/compact_remote_history_tests.rs
++++ b/codex-rs/core/src/compact_remote_history_tests.rs
+@@ -1,5 +1,6 @@
+ use super::*;
+ use codex_history::CodexHarnessMetadata;
++use pretty_assertions::assert_eq;
+ 
+ #[test]
+ fn rewritten_output_preserves_harness_metadata() {
+@@ -24,3 +25,52 @@ fn rewritten_output_preserves_harness_metadata() {
+     assert_eq!(rewritten.metadata, envelope.metadata);
+     assert_ne!(rewritten.item, envelope.item);
+ }
++
++#[tokio::test]
++async fn snapshot_preflight_counts_projection_and_recomputes_after_trimming() {
++    let (_session, mut turn) = crate::session::tests::make_session_and_context().await;
++    let model = std::sync::Arc::make_mut(
++        &mut std::sync::Arc::make_mut(&mut turn.initial_settings).model_info,
++    );
++    model.context_window = Some(1000);
++    model.effective_context_window_percent = 100;
++    let output = |body: &str| {
++        ResponseItemEnvelope::new(
++            serde_json::from_value(serde_json::json!({
++                "type":"function_call_output", "name":"map",
++                "output":format!("<codex_snapshot key=\"map\">\n{body}\n</codex_snapshot>")
++            }))
++            .unwrap(),
++        )
++    };
++    let original = vec![
++        output(&"old".repeat(/*n*/ 900)),
++        output(&"new".repeat(/*n*/ 900)),
++    ];
++    let mut history = ContextManager::new();
++    history.replaceable_tool_output_keys = vec!["map".into()];
++    history.replace_annotated(original.clone());
++    let base = BaseInstructions {
++        text: String::new(),
++        provenance: None,
++    };
++    assert_eq!(
++        trim_function_call_history_to_fit_context_window(&mut history, &turn, &base),
++        (0, 0)
++    );
++    assert_eq!(history.annotated_items(), original);
++    std::sync::Arc::make_mut(
++        &mut std::sync::Arc::make_mut(&mut turn.initial_settings).model_info,
++    )
++    .context_window = Some(100);
++    let (rewritten, _) =
++        trim_function_call_history_to_fit_context_window(&mut history, &turn, &base);
++    assert_eq!(rewritten, 2);
++    assert_eq!(
++        history.annotated_items(),
++        original
++            .iter()
++            .map(|item| rewritten_output_for_context_window(item).unwrap())
++            .collect::<Vec<_>>()
++    );
++}
+diff --git a/codex-rs/core/src/compact_remote_v2_attempt.rs b/codex-rs/core/src/compact_remote_v2_attempt.rs
+index 60b5b1b7721c6b22f83311ca43f16430d1b19f73..47bc0ea07ddc9f4a0c4ae6ca27171d90bec619a1 100644
+--- a/codex-rs/core/src/compact_remote_v2_attempt.rs
++++ b/codex-rs/core/src/compact_remote_v2_attempt.rs
+@@ -54,7 +54,8 @@ pub(super) async fn run_remote_compact_v2_attempt(
+     if estimated_deleted_tokens > 0 {
+         let max_local_deleted_tokens = sess
+             .estimated_tokens_after_last_model_generated_item()
+-            .await;
++            .await
++            .max(/*other*/ 0);
+         analytics_details.active_context_tokens_before = analytics_details
+             .active_context_tokens_before
+             .map(|active_context_tokens_before| {
+diff --git a/codex-rs/core/src/config/mod.rs b/codex-rs/core/src/config/mod.rs
+index 57f8140720c9657e138ecfe357795480831f2750..ce770018dee4ae253497454c91de5828a3ad71b3 100644
+--- a/codex-rs/core/src/config/mod.rs
++++ b/codex-rs/core/src/config/mod.rs
+@@ -1040,6 +1040,8 @@ pub struct Config {
+     /// `/v1/realtime`
+     /// connection) without changing normal provider HTTP requests.
+     pub experimental_realtime_ws_base_url: Option<String>,
++    /// Opt-in exact keys or trailing-`*` prefixes for replacing superseded snapshots by full key.
++    pub experimental_replaceable_tool_output_keys: Vec<String>,
+     /// Experimental / do not use. Overrides only the WebRTC realtime call
+     /// creation base URL.
+     pub experimental_realtime_webrtc_call_base_url: Option<String>,
+@@ -4435,6 +4437,7 @@ impl Config {
+                     speaker: audio.speaker,
+                 }),
+             experimental_realtime_ws_base_url: cfg.experimental_realtime_ws_base_url,
++            experimental_replaceable_tool_output_keys: cfg.experimental_replaceable_tool_output_keys,
+             experimental_realtime_webrtc_call_base_url: cfg
+                 .experimental_realtime_webrtc_call_base_url,
+             experimental_realtime_ws_model: cfg.experimental_realtime_ws_model,
+diff --git a/codex-rs/core/src/context_manager/history.rs b/codex-rs/core/src/context_manager/history.rs
+index 2475e685ea12ff4f3d32cb00a1cfd877969f5673..dc1d6a09f5fbe12374d33cad3f3b569e2b994cca 100644
+--- a/codex-rs/core/src/context_manager/history.rs
++++ b/codex-rs/core/src/context_manager/history.rs
+@@ -9,6 +9,8 @@
+ //! Oversized instructions keep an incomplete excerpt for bounded root review, including
+ //! sources recovered from legacy Guardian checkpoints before their raw history is dropped.
+ 
++#[path = "snapshots.rs"]
++mod snapshots;
+ #[path = "history_user_authorization.rs"]
+ mod user_authorization;
+ 
+@@ -89,6 +91,7 @@ fn next_guardian_review_context_revision() -> u64 {
+ /// Transcript of thread history
+ #[derive(Debug, Clone)]
+ pub(crate) struct ContextManager {
++    pub(crate) replaceable_tool_output_keys: Vec<String>,
+     /// The oldest items are at the beginning of the vector. Snapshots share the vector until a
+     /// caller needs to mutate it, avoiding deep copies for read-only history consumers.
+     items: Arc<Vec<ResponseItemEnvelope>>,
+@@ -232,6 +235,7 @@ impl Default for ContextManager {
+ impl ContextManager {
+     pub(crate) fn new() -> Self {
+         Self {
++            replaceable_tool_output_keys: Vec::new(),
+             items: Arc::new(Vec::new()),
+             review_history: None,
+             retained_context: Arc::default(),
+@@ -591,7 +595,10 @@ impl ContextManager {
+         input_modalities: &[InputModality],
+     ) -> Vec<ResponseItemEnvelope> {
+         self.normalize_history(input_modalities);
+-        Arc::unwrap_or_clone(self.items)
++        snapshots::project(
++            Arc::unwrap_or_clone(self.items),
++            &self.replaceable_tool_output_keys,
++        )
+     }
+ 
+     /// Iterates over raw response items without exposing their history envelopes.
+@@ -639,7 +646,7 @@ impl ContextManager {
+             i64::try_from(approx_token_count(&base_instructions.text)).unwrap_or(i64::MAX);
+ 
+         let items_tokens = self
+-            .items
++            .projected_items()
+             .iter()
+             .map(|envelope| estimate_item_token_count(&envelope.item))
+             .fold(0i64, i64::saturating_add);
+@@ -907,25 +914,20 @@ impl ContextManager {
+             .as_ref()
+             .map(|info| info.last_token_usage.total_tokens)
+             .unwrap_or(0);
+-        let items_after_last_model_generated_tokens = self
+-            .items_after_last_model_generated_item()
+-            .map(estimate_item_token_count)
+-            .fold(0i64, i64::saturating_add);
++        let items_after_last_model_generated_tokens =
++            self.estimated_tokens_after_last_model_generated_item();
+         if server_reasoning_included {
+-            last_tokens.saturating_add(items_after_last_model_generated_tokens)
++            last_tokens
++                .saturating_add(items_after_last_model_generated_tokens)
++                .max(/*other*/ 0)
+         } else {
+             last_tokens
+                 .saturating_add(self.get_non_last_reasoning_items_tokens())
+                 .saturating_add(items_after_last_model_generated_tokens)
++                .max(/*other*/ 0)
+         }
+     }
+ 
+-    pub(crate) fn estimated_tokens_after_last_model_generated_item(&self) -> i64 {
+-        self.items_after_last_model_generated_item()
+-            .map(estimate_item_token_count)
+-            .fold(0i64, i64::saturating_add)
+-    }
+-
+     /// This function enforces a couple of invariants on the in-memory history:
+     /// 1. every call (function/custom) has a corresponding output entry
+     /// 2. every output has a corresponding call entry or names an external tool event
+diff --git a/codex-rs/core/src/guardian/review_session_setup.rs b/codex-rs/core/src/guardian/review_session_setup.rs
+index 96527b11c14d52f8136e300a747ad3618ded7206..0d1463d052af19b0e0f5551c274f680d2dd5f6ab 100644
+--- a/codex-rs/core/src/guardian/review_session_setup.rs
++++ b/codex-rs/core/src/guardian/review_session_setup.rs
+@@ -93,6 +93,8 @@ impl PreparedGuardianContext {
+                 .map(|item| InitialHistory::Forked(vec![RolloutItem::ResponseItem(item.into())]))
+         });
+         let mut config = self.config.clone();
++        // Snapshot projection is a parent-model presentation choice, not evidence filtering.
++        config.experimental_replaceable_tool_output_keys.clear();
+         config.model_provider.supports_websockets &= self
+             .parent
+             .services
+diff --git a/codex-rs/core/src/guardian/review_session_tests.rs b/codex-rs/core/src/guardian/review_session_tests.rs
+index 0a2eaf9445f6f3fbed748b07c9755807ee70aa60..0e2c12db3612684f793184b1c5aade40ae36a8e8 100644
+--- a/codex-rs/core/src/guardian/review_session_tests.rs
++++ b/codex-rs/core/src/guardian/review_session_tests.rs
+@@ -73,7 +73,17 @@ async fn run_review_preserves_evidence_during_parent_compaction() {
+     .with_node_repl_policy(&params.node_repl_policy);
+     let manager = prewarm_test_session(&params, reviewer).await;
+     // Capture the review context, then compact the parent before the reviewer builds its prompt.
++    params
++        .spawn_config
++        .experimental_replaceable_tool_output_keys = vec!["map".into()];
+     let prepared = setup::prepare_review(params).await.unwrap();
++    let (review_options, _) = prepared.setup().thread_options(/*snapshot*/ None).await;
++    assert_eq!(
++        review_options
++            .config
++            .experimental_replaceable_tool_output_keys,
++        Vec::<String>::new()
++    );
+     let checkpoint: ResponseItem = serde_json::from_value(serde_json::json!({
+         "type": "compaction", "id": "cmp_new", "encrypted_content": "new-checkpoint"
+     }))
+diff --git a/codex-rs/core/src/session/session.rs b/codex-rs/core/src/session/session.rs
+index 824cf589cd4e584748bdb7071c156c0466f65ded..455ec6c3743c45e4ed192018a0e1d98b292fd73b 100644
+--- a/codex-rs/core/src/session/session.rs
++++ b/codex-rs/core/src/session/session.rs
+@@ -1498,6 +1498,8 @@ impl Session {
+                 ),
+             );
+             state.base_instructions_provenance = base_instructions_provenance.clone();
++            state.history.replaceable_tool_output_keys =
++                config.experimental_replaceable_tool_output_keys.clone();
+             state.active_disabled_plugin_ids = session_configuration.disabled_plugin_ids.clone();
+             let managed_network_requirements_configured = config
+                 .config_layer_stack
+diff --git a/codex-rs/core/tests/suite/client_websockets.rs b/codex-rs/core/tests/suite/client_websockets.rs
+index c6345c160d18898ef27a9fea9b3a1fa26e7fad42..beb35eee0b921676273f5d14c243972f6005e541 100755
+--- a/codex-rs/core/tests/suite/client_websockets.rs
++++ b/codex-rs/core/tests/suite/client_websockets.rs
+@@ -78,6 +78,8 @@ use tracing::Instrument;
+ use tracing_test::traced_test;
+ 
+ const MODEL: &str = "gpt-5.4";
++#[path = "snapshot_websocket_tests.rs"]
++mod snapshot_websocket_tests;
+ const OPENAI_BETA_HEADER: &str = "OpenAI-Beta";
+ const USER_AGENT_HEADER: &str = "user-agent";
+ const WS_V2_BETA_HEADER_VALUE: &str = "responses_websockets=2026-02-06";
+diff --git a/codex-rs/core/tests/suite/mod.rs b/codex-rs/core/tests/suite/mod.rs
+index 14805e25b511d5131dc201eb1e38287c1af329e8..10bc8f6b3a8fb2188a8dfccbe1cb584428ba9ed8 100644
+--- a/codex-rs/core/tests/suite/mod.rs
++++ b/codex-rs/core/tests/suite/mod.rs
+@@ -88,6 +88,7 @@ mod guardian_authorization_refresh;
+ mod guardian_cached_score;
+ #[path = "guardian_checkpoint_migration_tests.rs"]
+ mod guardian_checkpoint_migration;
++mod replaceable_snapshots;
+ // Uses the same command-approval harness as guardian_review below.
+ mod canonical_plugin_connectors;
+ mod gateway_auth;
+diff --git a/codex-rs/thread-manager-sample/src/main.rs b/codex-rs/thread-manager-sample/src/main.rs
+index 5e1d975ae818ee3778a4f81d6b9b9c1f90bba04d..c81e96268a5d33e28956e0e633e7b8839978e2eb 100644
+--- a/codex-rs/thread-manager-sample/src/main.rs
++++ b/codex-rs/thread-manager-sample/src/main.rs
+@@ -353,6 +353,7 @@ async fn new_config(
+         responses_api_metadata: BTreeMap::new(),
+         realtime_audio: RealtimeAudioConfig::default(),
+         experimental_realtime_ws_base_url: None,
++        experimental_replaceable_tool_output_keys: Vec::new(),
+         experimental_realtime_webrtc_call_base_url: None,
+         experimental_realtime_ws_model: None,
+         realtime: RealtimeConfig::default(),
+diff --git a/codex-rs/core/src/context_manager/snapshots.rs b/codex-rs/core/src/context_manager/snapshots.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..70229b2f821bc8973f94413e3631fa81410114cc
+--- /dev/null
++++ b/codex-rs/core/src/context_manager/snapshots.rs
+@@ -0,0 +1,175 @@
++//! Opt-in model projection, never a rewrite of transcript or authorization evidence.
++//! Delimiters occupy entire LF/CRLF-delimited lines. Bodies are opaque complete snapshots;
++//! JSON strings (including escaped delimiters) are not recursively inspected.
++//! Compaction may discard even the latest snapshot: controllers must obtain a full observation.
++
++use super::ContextManager;
++use super::estimate_item_token_count;
++use codex_history::ResponseItemEnvelope;
++use codex_protocol::models::FunctionCallOutputBody;
++use codex_protocol::models::FunctionCallOutputContentItem;
++use codex_protocol::models::ResponseItem;
++use std::borrow::Cow;
++use std::collections::HashSet;
++use std::ops::Range;
++
++impl ContextManager {
++    pub(crate) fn projected_items(&self) -> Cow<'_, [ResponseItemEnvelope]> {
++        if self.replaceable_tool_output_keys.is_empty() {
++            Cow::Borrowed(&self.items)
++        } else {
++            Cow::Owned(project(
++                self.items.as_ref().clone(),
++                &self.replaceable_tool_output_keys,
++            ))
++        }
++    }
++
++    pub(crate) fn estimated_tokens_after_last_model_generated_item(&self) -> i64 {
++        if self.replaceable_tool_output_keys.is_empty() {
++            return self
++                .items_after_last_model_generated_item()
++                .map(estimate_item_token_count)
++                .fold(/*init*/ 0i64, i64::saturating_add);
++        }
++        let start = self.items.len() - self.items_after_last_model_generated_item().len();
++        let prefix = project(
++            self.items[..start].to_vec(),
++            &self.replaceable_tool_output_keys,
++        );
++        let tokens = |items: &[ResponseItemEnvelope]| {
++            items
++                .iter()
++                .map(|entry| estimate_item_token_count(&entry.item))
++                .fold(/*init*/ 0i64, i64::saturating_add)
++        };
++        // Newly observed snapshots can also shrink already-accounted-for output.
++        tokens(&self.projected_items()).saturating_sub(tokens(&prefix))
++    }
++}
++
++const OPEN: &str = "<codex_snapshot key=\"";
++const CLOSE: &str = "</codex_snapshot>";
++const MAX_BLOCK_BYTES: usize = 8192;
++const MAX_BLOCKS: usize = 32;
++
++fn blocks(text: &str) -> Option<Vec<(Range<usize>, &str)>> {
++    // Middle truncation can leave both delimiters intact. Reject its markers even
++    // outside a block so a truncated result cannot manufacture a replacement.
++    if text.contains("Warning: truncated output")
++        || text.contains(" tokens truncated…")
++        || text.contains(" chars truncated…")
++        || text.contains("[omitted ")
++    {
++        return None;
++    }
++    let mut result = Vec::new();
++    let mut pending = None;
++    let mut offset = 0;
++    for line in text.split_inclusive('\n') {
++        let value = line.strip_suffix('\n').unwrap_or(line);
++        let value = value.strip_suffix('\r').unwrap_or(value);
++        if value.starts_with("<codex_snapshot") {
++            // Fail closed for this result, including malformed/nested openers.
++            if pending.is_some() {
++                return None;
++            }
++            let key = value
++                .strip_prefix(OPEN)
++                .and_then(|s| s.strip_suffix("\">"))?;
++            if key.is_empty()
++                || key.len() > 128
++                || !key.bytes().all(|b| {
++                    b.is_ascii_alphanumeric() || matches!(b, b'/' | b'_' | b'-' | b'.' | b':')
++                })
++            {
++                return None;
++            }
++            pending = Some((offset, offset + line.len(), key));
++        } else if value == CLOSE {
++            let (start, body_start, key) = pending.take()?;
++            let end = offset + value.len();
++            if end - start > MAX_BLOCK_BYTES
++                || result.len() == MAX_BLOCKS
++                || text[body_start..offset].trim().is_empty()
++            {
++                return None;
++            }
++            result.push((start..end, key));
++        }
++        offset += line.len();
++    }
++    pending.is_none().then_some(result)
++}
++
++pub(super) fn project(
++    mut items: Vec<ResponseItemEnvelope>,
++    allowed: &[String],
++) -> Vec<ResponseItemEnvelope> {
++    if allowed.is_empty() {
++        return items;
++    }
++    let mut seen = HashSet::new();
++    for envelope in items.iter_mut().rev() {
++        let output = match &mut envelope.item {
++            ResponseItem::FunctionCallOutput { output, .. }
++            | ResponseItem::CustomToolCallOutput { output, .. } => output,
++            _ => continue,
++        };
++        let mut texts = match &mut output.body {
++            FunctionCallOutputBody::Text(text) => vec![text],
++            FunctionCallOutputBody::ContentItems(parts) => parts
++                .iter_mut()
++                .filter_map(|part| match part {
++                    FunctionCallOutputContentItem::InputText { text } => Some(text),
++                    FunctionCallOutputContentItem::InputImage { .. }
++                    | FunctionCallOutputContentItem::InputAudio { .. }
++                    | FunctionCallOutputContentItem::EncryptedContent { .. } => None,
++                })
++                .collect(),
++        };
++        // Blocks cannot straddle parts; the count limit applies to the whole result.
++        let Some(parsed) = texts
++            .iter()
++            .map(|text| blocks(text))
++            .collect::<Option<Vec<_>>>()
++        else {
++            continue;
++        };
++        if parsed.iter().map(Vec::len).sum::<usize>() > MAX_BLOCKS {
++            continue;
++        }
++        let replacements: Vec<Vec<_>> = parsed
++            .into_iter()
++            .rev()
++            .map(|blocks| {
++                blocks
++                    .into_iter()
++                    .rev()
++                    .filter_map(|(range, key)| {
++                        let eligible = allowed.iter().any(|pattern| {
++                            pattern
++                                .strip_suffix('*')
++                                .map_or(pattern == key, |prefix| key.starts_with(prefix))
++                        });
++                        if eligible && !seen.insert(key.to_owned()) {
++                            Some((range, format!("[Snapshot {key} superseded.]")))
++                        } else {
++                            None
++                        }
++                    })
++                    .collect()
++            })
++            .collect();
++        for (text, replacements) in texts.iter_mut().rev().zip(replacements) {
++            for (range, replacement) in replacements {
++                text.replace_range(range, &replacement);
++            }
++        }
++    }
++    items
++}
++
++#[cfg(test)]
++#[path = "snapshots_tests.rs"]
++mod tests;
+diff --git a/codex-rs/core/src/context_manager/snapshots_tests.rs b/codex-rs/core/src/context_manager/snapshots_tests.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..cc30f09fe030064945dea9b6bce3bb84d72b779a
+--- /dev/null
++++ b/codex-rs/core/src/context_manager/snapshots_tests.rs
+@@ -0,0 +1,260 @@
++use super::*;
++use codex_protocol::models::BaseInstructions;
++use pretty_assertions::assert_eq;
++use serde_json::json;
++
++fn snapshot(key: &str, body: &str) -> String {
++    format!("<codex_snapshot key=\"{key}\">\n{body}\n</codex_snapshot>")
++}
++
++fn output(text: &str) -> ResponseItemEnvelope {
++    ResponseItemEnvelope::new(serde_json::from_value(json!({
++        "type": "function_call_output", "name": "observation", "output": text,
++        "id": "fco_stable", "internal_chat_message_metadata_passthrough": {"turn_id": "evidence"}
++    })).unwrap())
++}
++
++#[test]
++fn projection_preserves_evidence_identity_and_other_keys() {
++    let a = snapshot("map", "old terrain");
++    let b = snapshot("map", "new terrain");
++    let other = snapshot("other", "independent session");
++    let items = vec![
++        output(&format!("Hit for 9!\n{a}\n{other}\nDecision pending")),
++        output(&b),
++    ];
++    let expected = vec![
++        output(&format!(
++            "Hit for 9!\n[Snapshot map superseded.]\n{other}\nDecision pending"
++        )),
++        output(&b),
++    ];
++    assert_eq!(project(items.clone(), &["map".into()]), expected);
++    assert_eq!(project(expected.clone(), &["map".into()]), expected);
++    assert_eq!(project(items.clone(), &[]), items);
++    assert_eq!(project(items.clone(), &["unmatched".into()]), items);
++}
++
++#[test]
++fn prefix_patterns_preserve_full_key_identity_and_nonmatching_outputs() {
++    let keys = ["crawl/a/map", "crawl/b/map", "crawl/map", "crawler/map", "other"];
++    let old: Vec<_> = keys.iter().map(|key| output(&snapshot(key, "old"))).collect();
++    let latest: Vec<_> = keys.iter().map(|key| output(&snapshot(key, "new"))).collect();
++    let mut items = old.clone();
++    items.extend(latest.clone());
++    for (patterns, replaced) in [
++        (vec!["crawl/*"], vec![0, 1, 2]),
++        (vec!["crawl/a/*", "crawl/a/map", "other"], vec![0, 4]),
++        (vec!["*"], vec![0, 1, 2, 3, 4]),
++        (vec!["crawl/", "crawl/*/map", "crawl/**", "^crawl/.*$"], vec![]),
++    ] {
++        let mut expected = old.clone();
++        for index in replaced {
++            expected[index] = output(&format!("[Snapshot {} superseded.]", keys[index]));
++        }
++        expected.extend(latest.clone());
++        let allowed: Vec<_> = patterns.into_iter().map(str::to_owned).collect();
++        assert_eq!(project(items.clone(), &allowed), expected);
++        assert_eq!(project(expected.clone(), &allowed), expected);
++    }
++}
++
++#[test]
++fn invalid_results_cannot_supersede_complete_observations() {
++    let valid = snapshot("map", "terrain");
++    let invalid = [
++        snapshot("map", ""),
++        snapshot("", "terrain"),
++        snapshot(&"m".repeat(/*n*/ 129), "terrain"),
++        snapshot("map", &"x".repeat(MAX_BLOCK_BYTES)),
++        snapshot("map", &snapshot("map", "nested")),
++        "<codex_snapshot key=\"map\">\nincomplete".into(),
++        snapshot("map", "head…100 tokens truncated…tail"),
++        format!("Warning: truncated output\n{valid}"),
++        format!("<codex_snapshot key='map'>\n{valid}\n</codex_snapshot>"),
++        format!("prefix{valid}"),
++        valid.replace("key=\"map\"", "key=\"map space\""),
++        (0..=MAX_BLOCKS).map(|_| format!("{valid}\n")).collect(),
++        serde_json::to_string(&valid).unwrap(),
++    ];
++    for text in invalid {
++        assert!(blocks(&text).is_none_or(|parsed| parsed.is_empty()));
++        let items = vec![output(&valid), output(&text)];
++        assert_eq!(project(items.clone(), &["map".into()]), items, "{text}");
++    }
++}
++
++#[test]
++fn exact_byte_key_and_count_limits_are_accepted() {
++    let key = "k".repeat(/*n*/ 128);
++    let overhead = snapshot(&key, "").len();
++    let block = snapshot(&key, &"x".repeat(MAX_BLOCK_BYTES - overhead));
++    assert_eq!(
++        blocks(&block),
++        Some(vec![(0..MAX_BLOCK_BYTES, key.as_str())])
++    );
++    assert_eq!(
++        blocks(&snapshot(&key, &"x".repeat(MAX_BLOCK_BYTES - overhead + 1))),
++        None
++    );
++    let text = (0..MAX_BLOCKS)
++        .map(|_| format!("{}\n", snapshot("map", "x")))
++        .collect::<String>();
++    assert_eq!(blocks(&text).unwrap().len(), MAX_BLOCKS);
++}
++
++#[test]
++fn crlf_and_metadata_survive_projection() {
++    let old = snapshot("map", "old").replace('\n', "\r\n");
++    let latest = snapshot("map", "latest");
++    let mut old_item = output(&format!("{old}\r\nCombat"));
++    old_item.metadata = Some(codex_history::CodexHarnessMetadata::default());
++    if let ResponseItem::FunctionCallOutput {
++        output,
++        internal_chat_message_metadata_passthrough: Some(metadata),
++        ..
++    } = &mut old_item.item
++    {
++        output.success = Some(false);
++        metadata.cell_id = Some("cell-evidence".into());
++        metadata.tool_calls_complete = Some(true);
++    }
++    let mut expected = old_item.clone();
++    if let ResponseItem::FunctionCallOutput { output, .. } = &mut expected.item {
++        output.body = FunctionCallOutputBody::Text("[Snapshot map superseded.]\r\nCombat".into());
++    }
++    assert_eq!(
++        project(vec![old_item, output(&latest)], &["map".into()]),
++        vec![expected, output(&latest)]
++    );
++}
++
++#[test]
++fn result_limits_and_truncation_apply_across_text_parts() {
++    let valid = snapshot("map", "terrain");
++    let mut many: Vec<_> = (0..MAX_BLOCKS).map(|_| valid.clone()).collect();
++    many.push(valid.clone());
++    for parts in [
++        many,
++        vec!["Warning: truncated output".into(), valid.clone()],
++    ] {
++        let item = ResponseItemEnvelope::new(
++            serde_json::from_value(json!({
++                "type":"custom_tool_call_output", "call_id":"call", "output":parts.iter()
++                    .map(|text| json!({"type":"input_text", "text":text})).collect::<Vec<_>>()
++            }))
++            .unwrap(),
++        );
++        let items = vec![output(&valid), item];
++        assert_eq!(project(items.clone(), &["map".into()]), items);
++    }
++}
++
++#[test]
++fn content_parts_clear_and_omitted_updates_preserve_surroundings() {
++    let a = snapshot("map", "terrain");
++    let clear = snapshot("map", r#"{"map":null,"label":"</codex_snapshot>"}"#);
++    let item = ResponseItemEnvelope::new(
++        serde_json::from_value(json!({
++            "type": "custom_tool_call_output", "call_id": "call", "output": [
++                {"type":"input_text", "text": format!("{a}\n{a}")},
++                {"type":"input_image", "image_url":"https://example.com/map.png"},
++                {"type":"input_text", "text":clear}
++            ]
++        }))
++        .unwrap(),
++    );
++    let mut expected = item.clone();
++    if let ResponseItem::CustomToolCallOutput { output, .. } = &mut expected.item
++        && let FunctionCallOutputBody::ContentItems(parts) = &mut output.body
++    {
++        parts[0] = FunctionCallOutputContentItem::InputText {
++            text: "[Snapshot map superseded.]\n[Snapshot map superseded.]".into(),
++        };
++    }
++    let ordinary = output("No map update. An orc hits you.");
++    assert_eq!(
++        project(vec![item, ordinary.clone()], &["map".into()]),
++        vec![expected, ordinary]
++    );
++}
++
++#[test]
++fn projection_and_accounting_follow_surviving_history() {
++    let a = snapshot("map", &"terrain".repeat(/*n*/ 200));
++    let b = snapshot("map", "new");
++    let mut history = ContextManager::new();
++    history.replaceable_tool_output_keys = vec!["map".into()];
++    history.replace_annotated(vec![output(&a), output(&b)]);
++    let original = history.annotated_items().to_vec();
++    let expected = project(original.clone(), &["map".into()]);
++    assert_eq!(history.clone().for_prompt_annotated(&[]), expected);
++    assert_eq!(history.annotated_items(), original);
++    let instructions = BaseInstructions {
++        text: String::new(),
++        provenance: None,
++    };
++    assert_eq!(
++        history.estimate_token_count_with_base_instructions(&instructions),
++        Some(
++            expected
++                .iter()
++                .map(|entry| super::super::estimate_item_token_count(&entry.item))
++                .sum()
++        )
++    );
++    history.replace_annotated(vec![output(&a)]);
++    assert_eq!(history.clone().for_prompt_annotated(&[]), vec![output(&a)]);
++    // A user-authored marker never participates in tool-output replacement.
++    let message = ResponseItemEnvelope::new(
++        serde_json::from_value(json!({
++            "type":"message", "role":"user", "content":[{"type":"input_text", "text": b}],
++            "internal_chat_message_metadata_passthrough":{"content_item_kinds":["unknown"]}
++        }))
++        .unwrap(),
++    );
++    history.replace_annotated(vec![output(&a), message.clone()]);
++    assert_eq!(
++        history.clone().for_prompt_annotated(&[]),
++        vec![output(&a), message]
++    );
++}
++
++#[test]
++fn rollback_restores_latest_surviving_map_and_accounts_for_replacement() {
++    let message =
++        |role: &str| {
++            ResponseItemEnvelope::new(serde_json::from_value(json!({
++        "type":"message", "role":role, "content":[{"type":"input_text", "text":"observe"}],
++        "internal_chat_message_metadata_passthrough":{"content_item_kinds":["unknown"]}
++    })).unwrap())
++        };
++    let a = snapshot("map", &"terrain".repeat(/*n*/ 500));
++    let b = snapshot("map", "new");
++    let mut history = ContextManager::new();
++    history.replaceable_tool_output_keys = vec!["map".into()];
++    let previous = vec![message("user"), output(&a), message("assistant")];
++    let mut full = previous.clone();
++    full.extend([message("user"), message("assistant"), output(&b)]);
++    history.replace_annotated(full.clone());
++    let projected = project(full.clone(), &["map".into()]);
++    let tokens = |items: &[ResponseItemEnvelope]| {
++        items
++            .iter()
++            .map(|entry| super::super::estimate_item_token_count(&entry.item))
++            .sum::<i64>()
++    };
++    assert_eq!(
++        history.estimated_tokens_after_last_model_generated_item(),
++        tokens(&projected) - tokens(&full[..full.len() - 1])
++    );
++    assert!(tokens(&projected) < tokens(&full) / 4);
++    history.drop_last_n_user_turns(/*num_turns*/ 1);
++    assert_eq!(history.clone().for_prompt_annotated(&[]), previous);
++    // Rehydration from saved response items carries raw bodies; projection is recomputed.
++    let serialized = serde_json::to_string(&history.raw_items().collect::<Vec<_>>()).unwrap();
++    let mut resumed = ContextManager::new();
++    resumed.replaceable_tool_output_keys = vec!["map".into()];
++    resumed.replace(serde_json::from_str(&serialized).unwrap());
++    assert_eq!(resumed.for_prompt_annotated(&[]), previous);
++}
+diff --git a/codex-rs/core/tests/suite/replaceable_snapshots.rs b/codex-rs/core/tests/suite/replaceable_snapshots.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..4306808cdc62fc6f49bb8f162281b523086e1235
+--- /dev/null
++++ b/codex-rs/core/tests/suite/replaceable_snapshots.rs
+@@ -0,0 +1,206 @@
++use anyhow::Result;
++use codex_features::Feature;
++use codex_history::RolloutItem;
++use codex_protocol::protocol::EventMsg;
++use codex_protocol::protocol::Op;
++use codex_protocol::protocol::ThreadRolledBackEvent;
++use core_test_support::responses;
++use core_test_support::skip_if_no_network;
++use core_test_support::test_codex::TestCodexHarness;
++use core_test_support::test_codex::test_codex;
++use core_test_support::wait_for_event;
++use pretty_assertions::assert_eq;
++use serde_json::json;
++use test_case::test_case;
++
++#[test_case(false, "crawl/test/map"; "shell")]
++#[test_case(true, "crawl/test/map"; "code_mode")]
++#[test_case(false, ""; "disabled")]
++#[test_case(false, "crawl/*"; "shell_prefix")]
++#[test_case(true, "crawl/*"; "code_mode_prefix")]
++#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
++async fn snapshots_project_requests_but_preserve_review_and_rollout(
++    code_mode: bool,
++    pattern: &'static str,
++) -> Result<()> {
++    skip_if_no_network!(Ok(()));
++    let enabled = !pattern.is_empty();
++    let harness = TestCodexHarness::with_auto_env_builder(
++        test_codex()
++            .with_model("test-gpt-5.1-codex")
++            .with_config(move |config| {
++                if enabled {
++                    config.experimental_replaceable_tool_output_keys =
++                        vec![pattern.into()];
++                }
++                if code_mode {
++                    let _ = config.features.enable(Feature::CodeMode);
++                    let _ = config.features.enable(Feature::ExecutedToolCallMetadata);
++                } else {
++                    let _ = config.features.disable(Feature::CodeMode);
++                }
++            }),
++    )
++    .await?;
++    let server = harness.server();
++    let test = harness.test();
++    let mut outputs: Vec<serde_json::Value> = Vec::new();
++    for sequence in 0..3 {
++        let mut body = format!(
++            "Combat message {sequence}\n<codex_snapshot key=\"crawl/test/map\">\n{{\"map\":\"terrain-{sequence}\"}}\n</codex_snapshot>\nDecision required\n"
++        );
++        if sequence == 0 {
++            body.push_str("<codex_snapshot key=\"crawl/other/map\">\nIndependent map\n</codex_snapshot>\n");
++        }
++        harness.write_file("map.txt", &body).await?;
++        let call_id = format!("call-{sequence}");
++        let call = if code_mode {
++            responses::ev_custom_tool_call(
++                &call_id,
++                "exec",
++                "text((await tools.exec_command({cmd: 'cat map.txt'})).output)",
++            )
++        } else {
++            responses::ev_exec_command_call(&call_id, "cat map.txt")
++        };
++        responses::mount_sse_once(
++            server,
++            responses::sse(vec![
++                responses::ev_response_created(&format!("tool-{sequence}")),
++                call,
++                responses::ev_completed(&format!("tool-{sequence}")),
++            ]),
++        )
++        .await;
++        let mock = responses::mount_sse_once(
++            server,
++            responses::sse(vec![
++                responses::ev_assistant_message(&format!("msg-{sequence}"), "Observed"),
++                responses::ev_completed(&format!("done-{sequence}")),
++            ]),
++        )
++        .await;
++        test.submit_turn("Read the map file").await?;
++        let request = mock.single_request();
++        assert_eq!(
++            request
++                .inputs_of_type(if code_mode {
++                    "custom_tool_call"
++                } else {
++                    "function_call"
++                })
++                .len(),
++            sequence + 1
++        );
++        let get_output = |id: &str| {
++            if code_mode {
++                request.custom_tool_call_output(id)
++            } else {
++                request.function_call_output(id)
++            }
++        };
++        let current = get_output(&call_id);
++        assert!(current.to_string().contains(&format!("terrain-{sequence}")));
++        for (old_sequence, original) in outputs.iter().enumerate() {
++            if !enabled {
++                assert_eq!(get_output(&format!("call-{old_sequence}")), *original);
++                continue;
++            }
++            let mut expected: serde_json::Value = original.clone();
++            let old_block = format!(
++                "<codex_snapshot key=\"crawl/test/map\">\n{{\"map\":\"terrain-{old_sequence}\"}}\n</codex_snapshot>"
++            );
++            let placeholder = "[Snapshot crawl/test/map superseded.]";
++            match &mut expected["output"] {
++                serde_json::Value::String(text) => {
++                    *text = text
++                        .replace(&old_block, placeholder)
++                        .replace(&old_block.replace('\n', "\r\n"), placeholder)
++                }
++                serde_json::Value::Array(parts) => {
++                    for part in parts {
++                        if let Some(text) = part["text"].as_str() {
++                            part["text"] = json!(
++                                text.replace(&old_block, placeholder)
++                                    .replace(&old_block.replace('\n', "\r\n"), placeholder)
++                            );
++                        }
++                    }
++                }
++                other => panic!("unexpected output: {other}"),
++            }
++            assert_eq!(get_output(&format!("call-{old_sequence}")), expected);
++            // In particular, attempted-tool metadata must not duplicate the old map.
++            assert!(
++                !serde_json::to_string(&request.input())?
++                    .contains(&format!("terrain-{old_sequence}"))
++            );
++        }
++        outputs.push(current);
++    }
++    let review = test.codex.conversation_history_snapshot().await;
++    let evidence = serde_json::to_string(&review.review_items().collect::<Vec<_>>())?;
++    for sequence in 0..3 {
++        assert!(evidence.contains(&format!("terrain-{sequence}")));
++    }
++    test.codex
++        .append_rollout_items(&[RolloutItem::EventMsg(EventMsg::ThreadRolledBack(
++            ThreadRolledBackEvent { num_turns: 1 },
++        ))])
++        .await?;
++    let features = test.config.features.clone();
++    let resumed = test_codex()
++        .with_model("test-gpt-5.1-codex")
++        .with_config(move |config| {
++            if enabled {
++                config.experimental_replaceable_tool_output_keys = vec![pattern.into()];
++            }
++            config.features = features;
++        })
++        .restart(server, test)
++        .await?;
++    let test = &resumed;
++    let replay = responses::mount_sse_once(
++        server,
++        responses::sse(vec![
++            responses::ev_assistant_message("resumed", "Continue"),
++            responses::ev_completed("resumed"),
++        ]),
++    )
++    .await;
++    test.submit_turn("Continue from the saved map").await?;
++    let replay_input = serde_json::to_string(&replay.single_request().input())?;
++    assert_eq!(replay_input.contains("terrain-0"), !enabled);
++    assert!(replay_input.contains("terrain-1"));
++    assert!(!replay_input.contains("terrain-2"));
++    let compact = responses::mount_sse_once(
++        server,
++        responses::sse(vec![
++            json!({"type":"response.output_item.done", "item":{
++                "type":"compaction", "encrypted_content":"summary"
++            }}),
++            responses::ev_completed("compacted"),
++        ]),
++    )
++    .await;
++    test.codex.submit(Op::Compact).await?;
++    wait_for_event(&test.codex, |event| {
++        matches!(event, EventMsg::TurnComplete(_))
++    })
++    .await;
++    let compact_input = serde_json::to_string(&compact.single_request().input())?;
++    assert_eq!(compact_input.contains("terrain-0"), !enabled);
++    assert!(compact_input.contains("terrain-1"));
++    assert!(!compact_input.contains("terrain-2"));
++    test.codex.shutdown_and_wait().await?;
++    let rollout = std::fs::read_to_string(
++        test.session_configured
++            .rollout_path
++            .as_ref()
++            .expect("persisted rollout"),
++    )?;
++    for sequence in 0..3 {
++        assert!(rollout.contains(&format!("terrain-{sequence}")));
++    }
++    Ok(())
++}
+diff --git a/codex-rs/core/tests/suite/snapshot_websocket_tests.rs b/codex-rs/core/tests/suite/snapshot_websocket_tests.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..cc85b81a282dfb3039c5a3373cfcd331328adf99
+--- /dev/null
++++ b/codex-rs/core/tests/suite/snapshot_websocket_tests.rs
+@@ -0,0 +1,42 @@
++use super::*;
++use pretty_assertions::assert_eq;
++
++#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
++async fn superseded_snapshot_forces_full_request_then_reuses_stable_projection() {
++    skip_if_no_network!();
++    let server = start_websocket_server(vec![vec![
++        vec![ev_response_created("resp-1"), ev_completed("resp-1")],
++        vec![ev_response_created("resp-2"), ev_completed("resp-2")],
++        vec![ev_response_created("resp-3"), ev_completed("resp-3")],
++    ]])
++    .await;
++    let harness = websocket_harness(&server).await;
++    let mut session = harness.client.new_session();
++    let output = |text: &str| {
++        serde_json::from_value(json!({
++            "type":"function_call_output", "name":"map", "output":text
++        }))
++        .unwrap()
++    };
++    let original = prompt_with_input(vec![output(
++        "<codex_snapshot key=\"map\">\nold terrain\n</codex_snapshot>",
++    )]);
++    let projected = prompt_with_input(vec![
++        output("[Snapshot map superseded.]"),
++        output("<codex_snapshot key=\"map\">\nnew terrain\n</codex_snapshot>"),
++    ]);
++    stream_until_complete(&mut session, &harness, &original).await;
++    stream_until_complete(&mut session, &harness, &projected).await;
++    stream_until_complete(&mut session, &harness, &projected).await;
++    let connection = server.single_connection();
++    let full = connection.get(/*index*/ 1).unwrap().body_json();
++    assert_eq!(full.get("previous_response_id"), None);
++    assert_eq!(
++        full["input"],
++        serde_json::to_value(&projected.input).unwrap()
++    );
++    let repeated = connection.get(/*index*/ 2).unwrap().body_json();
++    assert_eq!(repeated["previous_response_id"], "resp-2");
++    assert_eq!(repeated["input"], json!([]));
++    server.shutdown().await;
++}

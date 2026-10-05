@@ -1,0 +1,21 @@
+{
+  "source": "default/Agent native checkpoint turn26416; public inventory fields only",
+  "before": {
+    "name": "+7 eveningstar {chaos, +Blink rC++ Str-3 Stlth+}",
+    "quantity": 1,
+    "slot": 24,
+    "category": "weapons",
+    "letter_namespace": "equipment",
+    "name_current": true,
+    "letter": "y"
+  },
+  "after": {
+    "name": "+7 eveningstar of the Hodge-Podge {chaos, +Blink rC++ Str-3 Stlth+}",
+    "quantity": 1,
+    "slot": 24,
+    "category": "weapons",
+    "letter_namespace": "equipment",
+    "name_current": true,
+    "letter": "y"
+  }
+}

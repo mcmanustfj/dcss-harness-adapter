@@ -1,0 +1,376 @@
+{
+  "source": "Public WebTiles events, Minotaur Fighter SkillsTest, seed 31415, turn 0; Crawl 0.35-a0-1095-g7c31f6e797.",
+  "frames": [
+    {
+      "key": 109,
+      "events": [
+        {
+          "msg": "input_mode",
+          "mode": 0
+        },
+        {
+          "msg": "menu",
+          "type": "crt",
+          "tag": "skills",
+          "ui-centred": false
+        },
+        {
+          "msg": "txt",
+          "id": "menu_txt",
+          "lines": {
+            "0": "      <span class=\"fg1 bg0\">Skill           Level Cost   Apt       Skill           Level Cost   Apt",
+            "1": "  <span class=\"fg7 bg0\">a + Fighting         3.6   </span><span class=\"fg3 bg0\">2.8   </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg8 bg0\">j - Spellcasting     0.0   </span><span class=\"fg3 bg0\">2.0   </span><span class=\"fg15 bg0\">-4",
+            "2": "",
+            "3": "  <span class=\"fg2 bg0\">b - Maces &amp; Flails   1.3   </span><span class=\"fg3 bg0\">0.7   </span><span class=\"fg15 bg0\">+2",
+            "4": "  <span class=\"fg7 bg0\">c + Axes             2.4   </span><span class=\"fg3 bg0\">2.1   </span><span class=\"fg15 bg0\">+2",
+            "5": "  <span class=\"fg2 bg0\">d - Polearms         1.3   </span><span class=\"fg3 bg0\">0.7   </span><span class=\"fg15 bg0\">+2",
+            "6": "  <span class=\"fg8 bg0\">e - Unarmed Combat   0.0   </span><span class=\"fg3 bg0\">0.8   </span><span class=\"fg15 bg0\">+1",
+            "7": "",
+            "8": "",
+            "9": "  <span class=\"fg7 bg0\">f + Armour           3.6   </span><span class=\"fg3 bg0\">2.8   </span><span class=\"fg15 bg0\">+2",
+            "10": "  <span class=\"fg8 bg0\">g - Dodging          0.0   </span><span class=\"fg3 bg0\">0.8   </span><span class=\"fg15 bg0\">+1",
+            "11": "  <span class=\"fg7 bg0\">h + Shields          3.6   </span><span class=\"fg3 bg0\">2.8   </span><span class=\"fg15 bg0\">+2",
+            "12": "  <span class=\"fg8 bg0\">i - Stealth          0.0   </span><span class=\"fg3 bg0\">1.2   </span><span class=\"fg15 bg0\">-1",
+            "13": "",
+            "14": "",
+            "15": "",
+            "16": "",
+            "17": "",
+            "18": " <span class=\"fg7 bg0\">The relative cost of raising each skill is in </span><span class=\"fg3 bg0\">cyan</span><span class=\"fg7 bg0\">.",
+            "19": " <span class=\"fg7 bg0\">Skills enhanced by cross-training are in </span><span class=\"fg2 bg0\">green</span><span class=\"fg7 bg0\">.",
+            "20": "",
+            "21": " <span class=\"fg7 bg0\">[</span><span class=\"fg14 bg0\">?</span><span class=\"fg7 bg0\">] Help                [</span><span class=\"fg14 bg0\">=</span><span class=\"fg7 bg0\">] set a skill target",
+            "22": " <span class=\"fg7 bg0\">[</span><span class=\"fg14 bg0\">/</span><span class=\"fg7 bg0\">] </span><span class=\"fg8 bg0\">auto</span><span class=\"fg7 bg0\">|</span><span class=\"fg15 bg0\">manual </span><span class=\"fg7 bg0\">mode    [</span><span class=\"fg14 bg0\">*</span><span class=\"fg7 bg0\">] </span><span class=\"fg15 bg0\">useful</span><span class=\"fg7 bg0\">|</span><span class=\"fg8 bg0\">all </span><span class=\"fg7 bg0\">skills    [</span><span class=\"fg14 bg0\">_</span><span class=\"fg7 bg0\">] </span><span class=\"fg15 bg0\">enhanced</span><span class=\"fg7 bg0\">|</span><span class=\"fg8 bg0\">base </span><span class=\"fg7 bg0\">level",
+            "23": " <span class=\"fg7 bg0\">[</span><span class=\"fg14 bg0\">!</span><span class=\"fg7 bg0\">] </span><span class=\"fg8 bg0\">training</span><span class=\"fg7 bg0\">|</span><span class=\"fg15 bg0\">cost</span><span class=\"fg7 bg0\">|</span><span class=\"fg8 bg0\">targets"
+          }
+        }
+      ]
+    },
+    {
+      "key": 33,
+      "events": [
+        {
+          "msg": "txt",
+          "id": "menu_txt",
+          "lines": {
+            "0": "      <span class=\"fg1 bg0\">Skill           Level Target Apt       Skill           Level Target Apt",
+            "1": "  <span class=\"fg7 bg0\">a + Fighting         3.6  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg8 bg0\">j - Spellcasting     0.0  --     </span><span class=\"fg15 bg0\">-4",
+            "3": "  <span class=\"fg2 bg0\">b - Maces &amp; Flails   1.3  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2",
+            "4": "  <span class=\"fg7 bg0\">c + Axes             2.4  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2",
+            "5": "  <span class=\"fg2 bg0\">d - Polearms         1.3  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2",
+            "6": "  <span class=\"fg8 bg0\">e - Unarmed Combat   0.0  --     </span><span class=\"fg15 bg0\">+1",
+            "9": "  <span class=\"fg7 bg0\">f + Armour           3.6  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2",
+            "10": "  <span class=\"fg8 bg0\">g - Dodging          0.0  --     </span><span class=\"fg15 bg0\">+1",
+            "11": "  <span class=\"fg7 bg0\">h + Shields          3.6  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2",
+            "12": "  <span class=\"fg8 bg0\">i - Stealth          0.0  --     </span><span class=\"fg15 bg0\">-1",
+            "18": " <span class=\"fg7 bg0\">The current training targets, if any.",
+            "19": "",
+            "21": " <span class=\"fg7 bg0\">[</span><span class=\"fg14 bg0\">?</span><span class=\"fg7 bg0\">] Help                [</span><span class=\"fg14 bg0\">=</span><span class=\"fg7 bg0\">] set a skill target   [</span><span class=\"fg14 bg0\">-</span><span class=\"fg7 bg0\">] clear all targets",
+            "23": " <span class=\"fg7 bg0\">[</span><span class=\"fg14 bg0\">!</span><span class=\"fg7 bg0\">] </span><span class=\"fg8 bg0\">training</span><span class=\"fg7 bg0\">|</span><span class=\"fg8 bg0\">cost</span><span class=\"fg7 bg0\">|</span><span class=\"fg15 bg0\">targets"
+          }
+        }
+      ]
+    },
+    {
+      "key": 33,
+      "events": [
+        {
+          "msg": "txt",
+          "id": "menu_txt",
+          "lines": {
+            "0": "      <span class=\"fg1 bg0\">Skill           Level Train  Apt       Skill           Level Train  Apt",
+            "1": "  <span class=\"fg7 bg0\">a + Fighting         3.6  </span><span class=\"fg6 bg0\">25%    </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg8 bg0\">j - Spellcasting     0.0         </span><span class=\"fg15 bg0\">-4",
+            "3": "  <span class=\"fg2 bg0\">b - Maces &amp; Flails   1.3         </span><span class=\"fg15 bg0\">+2",
+            "4": "  <span class=\"fg7 bg0\">c + Axes             2.4  </span><span class=\"fg6 bg0\">25%    </span><span class=\"fg15 bg0\">+2",
+            "5": "  <span class=\"fg2 bg0\">d - Polearms         1.3         </span><span class=\"fg15 bg0\">+2",
+            "6": "  <span class=\"fg8 bg0\">e - Unarmed Combat   0.0         </span><span class=\"fg15 bg0\">+1",
+            "9": "  <span class=\"fg7 bg0\">f + Armour           3.6  </span><span class=\"fg6 bg0\">25%    </span><span class=\"fg15 bg0\">+2",
+            "10": "  <span class=\"fg8 bg0\">g - Dodging          0.0         </span><span class=\"fg15 bg0\">+1",
+            "11": "  <span class=\"fg7 bg0\">h + Shields          3.6  </span><span class=\"fg6 bg0\">25%    </span><span class=\"fg15 bg0\">+2",
+            "12": "  <span class=\"fg8 bg0\">i - Stealth          0.0         </span><span class=\"fg15 bg0\">-1",
+            "18": " <span class=\"fg7 bg0\">The percentage of incoming experience used to train each skill is in </span><span class=\"fg6 bg0\">brown</span><span class=\"fg7 bg0\">.",
+            "21": " <span class=\"fg7 bg0\">[</span><span class=\"fg14 bg0\">?</span><span class=\"fg7 bg0\">] Help                [</span><span class=\"fg14 bg0\">=</span><span class=\"fg7 bg0\">] set a skill target",
+            "23": " <span class=\"fg7 bg0\">[</span><span class=\"fg14 bg0\">!</span><span class=\"fg7 bg0\">] </span><span class=\"fg15 bg0\">training</span><span class=\"fg7 bg0\">|</span><span class=\"fg8 bg0\">cost</span><span class=\"fg7 bg0\">|</span><span class=\"fg8 bg0\">targets"
+          }
+        }
+      ]
+    },
+    {
+      "key": 99,
+      "events": [
+        {
+          "msg": "txt",
+          "id": "menu_txt",
+          "lines": {
+            "1": "  <span class=\"fg7 bg0\">a + Fighting         3.6  </span><span class=\"fg6 bg0\">20%    </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg8 bg0\">j - Spellcasting     0.0         </span><span class=\"fg15 bg0\">-4",
+            "4": "  <span class=\"fg15 bg0\">c * Axes             2.4  </span><span class=\"fg6 bg0\">40%    </span><span class=\"fg15 bg0\">+2",
+            "9": "  <span class=\"fg7 bg0\">f + Armour           3.6  </span><span class=\"fg6 bg0\">20%    </span><span class=\"fg15 bg0\">+2",
+            "11": "  <span class=\"fg7 bg0\">h + Shields          3.6  </span><span class=\"fg6 bg0\">20%    </span><span class=\"fg15 bg0\">+2"
+          }
+        }
+      ]
+    },
+    {
+      "key": 61,
+      "events": [
+        {
+          "msg": "txt",
+          "id": "menu_txt",
+          "lines": {
+            "0": "      <span class=\"fg1 bg0\">Skill           Level Target Apt       Skill           Level Target Apt",
+            "1": "  <span class=\"fg7 bg0\">a + Fighting         3.6  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg8 bg0\">j - Spellcasting     0.0  --     </span><span class=\"fg15 bg0\">-4",
+            "3": "  <span class=\"fg2 bg0\">b - Maces &amp; Flails   1.3  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2",
+            "4": "  <span class=\"fg15 bg0\">c * Axes             2.4  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2",
+            "5": "  <span class=\"fg2 bg0\">d - Polearms         1.3  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2",
+            "6": "  <span class=\"fg8 bg0\">e - Unarmed Combat   0.0  --     </span><span class=\"fg15 bg0\">+1",
+            "9": "  <span class=\"fg7 bg0\">f + Armour           3.6  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2",
+            "10": "  <span class=\"fg8 bg0\">g - Dodging          0.0  --     </span><span class=\"fg15 bg0\">+1",
+            "11": "  <span class=\"fg7 bg0\">h + Shields          3.6  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2",
+            "12": "  <span class=\"fg8 bg0\">i - Stealth          0.0  --     </span><span class=\"fg15 bg0\">-1",
+            "21": " <span class=\"fg7 bg0\">[</span><span class=\"fg14 bg0\">?</span><span class=\"fg7 bg0\">] Help                [</span><span class=\"fg14 bg0\">a</span><span class=\"fg7 bg0\">-</span><span class=\"fg14 bg0\">z</span><span class=\"fg7 bg0\">] set skill target   [</span><span class=\"fg14 bg0\">-</span><span class=\"fg7 bg0\">] clear selected target",
+            "23": " <span class=\"fg7 bg0\">[</span><span class=\"fg14 bg0\">!</span><span class=\"fg7 bg0\">] </span><span class=\"fg8 bg0\">training</span><span class=\"fg7 bg0\">|</span><span class=\"fg8 bg0\">cost</span><span class=\"fg7 bg0\">|</span><span class=\"fg15 bg0\">targets"
+          }
+        }
+      ]
+    },
+    {
+      "key": 99,
+      "events": [
+        {
+          "msg": "input_mode",
+          "mode": 7
+        },
+        {
+          "msg": "txt",
+          "id": "menu_txt",
+          "lines": {
+            "4": "  <span class=\"fg15 bg0\">c * Axes             2.4  </span><span class=\"fg7 bg4\">0      </span><span class=\"fg15 bg0\">+2"
+          }
+        }
+      ]
+    },
+    {
+      "key": 56,
+      "events": [
+        {
+          "msg": "txt",
+          "id": "menu_txt",
+          "lines": {
+            "4": "  <span class=\"fg15 bg0\">c * Axes             2.4  </span><span class=\"fg7 bg4\">8      </span><span class=\"fg15 bg0\">+2"
+          }
+        }
+      ]
+    },
+    {
+      "key": 13,
+      "events": [
+        {
+          "msg": "input_mode",
+          "mode": 0
+        },
+        {
+          "msg": "txt",
+          "id": "menu_txt",
+          "lines": {
+            "4": "  <span class=\"fg15 bg0\">c * Axes             2.4  8.0    +2",
+            "18": " <span class=\"fg7 bg0\">The current training targets, if any.",
+            "19": " <span class=\"fg7 bg0\">Skills enhanced by cross-training are in </span><span class=\"fg2 bg0\">green</span><span class=\"fg7 bg0\">.",
+            "21": " <span class=\"fg7 bg0\">[</span><span class=\"fg14 bg0\">?</span><span class=\"fg7 bg0\">] Help                [</span><span class=\"fg14 bg0\">=</span><span class=\"fg7 bg0\">] set a skill target   [</span><span class=\"fg14 bg0\">-</span><span class=\"fg7 bg0\">] clear all targets"
+          }
+        }
+      ]
+    },
+    {
+      "key": 42,
+      "events": [
+        {
+          "msg": "txt",
+          "id": "menu_txt",
+          "lines": {
+            "1": "  <span class=\"fg7 bg0\">a + Fighting         3.6  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg8 bg0\">o - Spellcasting     0.0  --     </span><span class=\"fg15 bg0\">-4",
+            "3": "  <span class=\"fg2 bg0\">b - Maces &amp; Flails   1.3  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg8 bg0\">p - Conjurations     0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "4": "  <span class=\"fg15 bg0\">c * Axes             2.4  8.0    +2    </span><span class=\"fg8 bg0\">q - Hexes            0.0  --     </span><span class=\"fg15 bg0\">-4",
+            "5": "  <span class=\"fg2 bg0\">d - Polearms         1.3  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg8 bg0\">r - Summonings       0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "6": "  <span class=\"fg8 bg0\">e - Staves           0.0  --     </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg8 bg0\">s - Necromancy       0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "7": "  <span class=\"fg8 bg0\">f - Unarmed Combat   0.0  --     </span><span class=\"fg15 bg0\">+1    </span><span class=\"fg8 bg0\">t - Forgecraft       0.0  --     </span><span class=\"fg15 bg0\">-2",
+            "8": "  <span class=\"fg8 bg0\">g - Throwing         0.0  --      </span><span class=\"fg15 bg0\">0    </span><span class=\"fg8 bg0\">u - Translocations   0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "9": "                                         <span class=\"fg8 bg0\">v - Alchemy          0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "10": "  <span class=\"fg8 bg0\">h - Short Blades     0.0  --     </span><span class=\"fg15 bg0\">+1    </span><span class=\"fg8 bg0\">w - Fire Magic       0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "11": "  <span class=\"fg8 bg0\">i - Long Blades      0.0  --     </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg8 bg0\">x - Ice Magic        0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "12": "  <span class=\"fg8 bg0\">j - Ranged Weapons   0.0  --     </span><span class=\"fg15 bg0\">+1    </span><span class=\"fg8 bg0\">y - Air Magic        0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "13": "                                         <span class=\"fg8 bg0\">z - Earth Magic      0.0  --     </span><span class=\"fg15 bg0\">-2",
+            "14": "  <span class=\"fg7 bg0\">k + Armour           3.6  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2",
+            "15": "  <span class=\"fg8 bg0\">l - Dodging          0.0  --     </span><span class=\"fg15 bg0\">+1    </span><span class=\"fg8 bg0\">0 - Invocations      0.0  --      </span><span class=\"fg15 bg0\">0",
+            "16": "  <span class=\"fg7 bg0\">m + Shields          3.6  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg8 bg0\">1 - Evocations       0.0  --     </span><span class=\"fg15 bg0\">-1",
+            "17": "  <span class=\"fg8 bg0\">n - Stealth          0.0  --     </span><span class=\"fg15 bg0\">-1    </span><span class=\"fg8 bg0\">2 - Shapeshifting    0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "22": " <span class=\"fg7 bg0\">[</span><span class=\"fg14 bg0\">/</span><span class=\"fg7 bg0\">] </span><span class=\"fg8 bg0\">auto</span><span class=\"fg7 bg0\">|</span><span class=\"fg15 bg0\">manual </span><span class=\"fg7 bg0\">mode    [</span><span class=\"fg14 bg0\">*</span><span class=\"fg7 bg0\">] </span><span class=\"fg8 bg0\">useful</span><span class=\"fg7 bg0\">|</span><span class=\"fg15 bg0\">all </span><span class=\"fg7 bg0\">skills    [</span><span class=\"fg14 bg0\">_</span><span class=\"fg7 bg0\">] </span><span class=\"fg15 bg0\">enhanced</span><span class=\"fg7 bg0\">|</span><span class=\"fg8 bg0\">base </span><span class=\"fg7 bg0\">level"
+          }
+        }
+      ]
+    },
+    {
+      "key": 47,
+      "events": [
+        {
+          "msg": "txt",
+          "id": "menu_txt",
+          "lines": {
+            "1": "  <span class=\"fg7 bg0\">a + Fighting         3.6  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg8 bg0\">o + Spellcasting     0.0  --     </span><span class=\"fg15 bg0\">-4",
+            "3": "  <span class=\"fg10 bg0\">b + Maces &amp; Flails   1.3  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg8 bg0\">p + Conjurations     0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "4": "  <span class=\"fg7 bg0\">c + Axes             2.4  8.0    </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg8 bg0\">q + Hexes            0.0  --     </span><span class=\"fg15 bg0\">-4",
+            "5": "  <span class=\"fg10 bg0\">d + Polearms         1.3  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg8 bg0\">r + Summonings       0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "6": "  <span class=\"fg8 bg0\">e + Staves           0.0  --     </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg8 bg0\">s + Necromancy       0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "7": "  <span class=\"fg8 bg0\">f + Unarmed Combat   0.0  --     </span><span class=\"fg15 bg0\">+1    </span><span class=\"fg8 bg0\">t + Forgecraft       0.0  --     </span><span class=\"fg15 bg0\">-2",
+            "8": "  <span class=\"fg8 bg0\">g + Throwing         0.0  --      </span><span class=\"fg15 bg0\">0    </span><span class=\"fg8 bg0\">u + Translocations   0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "9": "                                         <span class=\"fg8 bg0\">v + Alchemy          0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "10": "  <span class=\"fg8 bg0\">h + Short Blades     0.0  --     </span><span class=\"fg15 bg0\">+1    </span><span class=\"fg8 bg0\">w + Fire Magic       0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "11": "  <span class=\"fg8 bg0\">i + Long Blades      0.0  --     </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg8 bg0\">x + Ice Magic        0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "12": "  <span class=\"fg8 bg0\">j + Ranged Weapons   0.0  --     </span><span class=\"fg15 bg0\">+1    </span><span class=\"fg8 bg0\">y + Air Magic        0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "13": "                                         <span class=\"fg8 bg0\">z + Earth Magic      0.0  --     </span><span class=\"fg15 bg0\">-2",
+            "15": "  <span class=\"fg8 bg0\">l + Dodging          0.0  --     </span><span class=\"fg15 bg0\">+1    </span><span class=\"fg8 bg0\">0 + Invocations      0.0  --      </span><span class=\"fg15 bg0\">0",
+            "16": "  <span class=\"fg7 bg0\">m + Shields          3.6  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg8 bg0\">1 + Evocations       0.0  --     </span><span class=\"fg15 bg0\">-1",
+            "17": "  <span class=\"fg8 bg0\">n + Stealth          0.0  --     </span><span class=\"fg15 bg0\">-1    </span><span class=\"fg8 bg0\">2 + Shapeshifting    0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "18": " <span class=\"fg7 bg0\">In automatic mode, skills are trained as you use them.",
+            "19": "",
+            "22": " <span class=\"fg7 bg0\">[</span><span class=\"fg14 bg0\">/</span><span class=\"fg7 bg0\">] </span><span class=\"fg15 bg0\">auto</span><span class=\"fg7 bg0\">|</span><span class=\"fg8 bg0\">manual </span><span class=\"fg7 bg0\">mode    [</span><span class=\"fg14 bg0\">*</span><span class=\"fg7 bg0\">] </span><span class=\"fg8 bg0\">useful</span><span class=\"fg7 bg0\">|</span><span class=\"fg15 bg0\">all </span><span class=\"fg7 bg0\">skills    [</span><span class=\"fg14 bg0\">_</span><span class=\"fg7 bg0\">] </span><span class=\"fg15 bg0\">enhanced</span><span class=\"fg7 bg0\">|</span><span class=\"fg8 bg0\">base </span><span class=\"fg7 bg0\">level"
+          }
+        }
+      ]
+    },
+    {
+      "key": 63,
+      "events": [
+        {
+          "msg": "txt",
+          "id": "menu_txt",
+          "lines": {
+            "1": "  <span class=\"fg7 bg0\">a + Fighting         3.6  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg7 bg0\">o + Spellcasting     0.0  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">-4",
+            "3": "  <span class=\"fg7 bg0\">b + Maces &amp; Flails   1.3  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg7 bg0\">p + Conjurations     0.0  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">-3",
+            "4": "  <span class=\"fg7 bg0\">c + Axes             2.4  8.0    </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg7 bg0\">q + Hexes            0.0  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">-4",
+            "5": "  <span class=\"fg7 bg0\">d + Polearms         1.3  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg7 bg0\">r + Summonings       0.0  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">-3",
+            "6": "  <span class=\"fg7 bg0\">e + Staves           0.0  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg7 bg0\">s + Necromancy       0.0  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">-3",
+            "7": "  <span class=\"fg7 bg0\">f + Unarmed Combat   0.0  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+1    </span><span class=\"fg7 bg0\">t + Forgecraft       0.0  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">-2",
+            "8": "  <span class=\"fg7 bg0\">g + Throwing         0.0  </span><span class=\"fg8 bg0\">--      </span><span class=\"fg15 bg0\">0    </span><span class=\"fg7 bg0\">u + Translocations   0.0  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">-3",
+            "9": "                                         <span class=\"fg7 bg0\">v + Alchemy          0.0  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">-3",
+            "10": "  <span class=\"fg7 bg0\">h + Short Blades     0.0  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+1    </span><span class=\"fg7 bg0\">w + Fire Magic       0.0  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">-3",
+            "11": "  <span class=\"fg7 bg0\">i + Long Blades      0.0  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg7 bg0\">x + Ice Magic        0.0  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">-3",
+            "12": "  <span class=\"fg7 bg0\">j + Ranged Weapons   0.0  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+1    </span><span class=\"fg7 bg0\">y + Air Magic        0.0  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">-3",
+            "13": "                                         <span class=\"fg7 bg0\">z + Earth Magic      0.0  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">-2",
+            "15": "  <span class=\"fg7 bg0\">l + Dodging          0.0  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+1    </span><span class=\"fg7 bg0\">0 + Invocations      0.0  </span><span class=\"fg8 bg0\">--      </span><span class=\"fg15 bg0\">0",
+            "16": "  <span class=\"fg7 bg0\">m + Shields          3.6  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg7 bg0\">1 + Evocations       0.0  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">-1",
+            "17": "  <span class=\"fg7 bg0\">n + Stealth          0.0  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">-1    </span><span class=\"fg7 bg0\">2 + Shapeshifting    0.0  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">-3",
+            "18": " <span class=\"fg7 bg0\">Press the letter of a skill to read its description.",
+            "19": " <span class=\"fg7 bg0\">Press </span><span class=\"fg15 bg0\">? </span><span class=\"fg7 bg0\">for a general explanation of skilling and the various toggles.",
+            "21": " <span class=\"fg7 bg0\">[</span><span class=\"fg14 bg0\">?</span><span class=\"fg7 bg0\">] </span><span class=\"fg15 bg0\">Help                </span><span class=\"fg7 bg0\">[</span><span class=\"fg14 bg0\">a</span><span class=\"fg7 bg0\">-</span><span class=\"fg14 bg0\">z</span><span class=\"fg7 bg0\">] skill descriptions"
+          }
+        }
+      ]
+    },
+    {
+      "key": 99,
+      "events": [
+        {
+          "tile": {
+            "t": 9577,
+            "tex": 5
+          },
+          "title": "Axes",
+          "prefix": "",
+          "suffix": "",
+          "footer": "",
+          "quote": "",
+          "body": "Axes cleave through multiple enemies with a single swing, hitting foes in an arc around the wielder.\n\nBeing skilled with Axes will allow you to attack more quickly with all weapons of this type, as well as increasing your accuracy and damage with them.\n\nBeing skilled with Axes increases your effectiveness with Maces & Flails and Polearms, and vice versa.\n\nYour current training target is 8.0.\nAt 100% training you would reach 8.0 in about 5.1 XLs.\nAt current training (8%) you reach 8.0 in about 11.7 XLs.\n",
+          "msg": "ui-push",
+          "type": "describe-generic",
+          "ui-centred": false,
+          "generation_id": 2
+        }
+      ]
+    },
+    {
+      "key": 27,
+      "events": [
+        {
+          "msg": "ui-pop"
+        }
+      ]
+    },
+    {
+      "key": 27,
+      "events": [
+        {
+          "msg": "txt",
+          "id": "menu_txt",
+          "lines": {
+            "1": "  <span class=\"fg7 bg0\">a + Fighting         3.6  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg8 bg0\">o + Spellcasting     0.0  --     </span><span class=\"fg15 bg0\">-4",
+            "3": "  <span class=\"fg10 bg0\">b + Maces &amp; Flails   1.3  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg8 bg0\">p + Conjurations     0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "4": "  <span class=\"fg7 bg0\">c + Axes             2.4  8.0    </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg8 bg0\">q + Hexes            0.0  --     </span><span class=\"fg15 bg0\">-4",
+            "5": "  <span class=\"fg10 bg0\">d + Polearms         1.3  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg8 bg0\">r + Summonings       0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "6": "  <span class=\"fg8 bg0\">e + Staves           0.0  --     </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg8 bg0\">s + Necromancy       0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "7": "  <span class=\"fg8 bg0\">f + Unarmed Combat   0.0  --     </span><span class=\"fg15 bg0\">+1    </span><span class=\"fg8 bg0\">t + Forgecraft       0.0  --     </span><span class=\"fg15 bg0\">-2",
+            "8": "  <span class=\"fg8 bg0\">g + Throwing         0.0  --      </span><span class=\"fg15 bg0\">0    </span><span class=\"fg8 bg0\">u + Translocations   0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "9": "                                         <span class=\"fg8 bg0\">v + Alchemy          0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "10": "  <span class=\"fg8 bg0\">h + Short Blades     0.0  --     </span><span class=\"fg15 bg0\">+1    </span><span class=\"fg8 bg0\">w + Fire Magic       0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "11": "  <span class=\"fg8 bg0\">i + Long Blades      0.0  --     </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg8 bg0\">x + Ice Magic        0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "12": "  <span class=\"fg8 bg0\">j + Ranged Weapons   0.0  --     </span><span class=\"fg15 bg0\">+1    </span><span class=\"fg8 bg0\">y + Air Magic        0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "13": "                                         <span class=\"fg8 bg0\">z + Earth Magic      0.0  --     </span><span class=\"fg15 bg0\">-2",
+            "15": "  <span class=\"fg8 bg0\">l + Dodging          0.0  --     </span><span class=\"fg15 bg0\">+1    </span><span class=\"fg8 bg0\">0 + Invocations      0.0  --      </span><span class=\"fg15 bg0\">0",
+            "16": "  <span class=\"fg7 bg0\">m + Shields          3.6  </span><span class=\"fg8 bg0\">--     </span><span class=\"fg15 bg0\">+2    </span><span class=\"fg8 bg0\">1 + Evocations       0.0  --     </span><span class=\"fg15 bg0\">-1",
+            "17": "  <span class=\"fg8 bg0\">n + Stealth          0.0  --     </span><span class=\"fg15 bg0\">-1    </span><span class=\"fg8 bg0\">2 + Shapeshifting    0.0  --     </span><span class=\"fg15 bg0\">-3",
+            "18": " <span class=\"fg7 bg0\">The current training targets, if any.",
+            "19": " <span class=\"fg7 bg0\">Skills enhanced by cross-training are in </span><span class=\"fg2 bg0\">green</span><span class=\"fg7 bg0\">.",
+            "21": " <span class=\"fg7 bg0\">[</span><span class=\"fg14 bg0\">?</span><span class=\"fg7 bg0\">] Help                [</span><span class=\"fg14 bg0\">=</span><span class=\"fg7 bg0\">] set a skill target   [</span><span class=\"fg14 bg0\">-</span><span class=\"fg7 bg0\">] clear all targets"
+          }
+        }
+      ]
+    },
+    {
+      "key": 27,
+      "events": [
+        {
+          "msg": "close_menu"
+        },
+        {
+          "msg": "close_all_menus"
+        },
+        {
+          "msg": "close_all_menus"
+        },
+        {
+          "msg": "input_mode",
+          "mode": 1
+        },
+        {
+          "msg": "txt",
+          "id": "menu_txt",
+          "lines": {
+            "0": "",
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "",
+            "6": "",
+            "7": "",
+            "8": "",
+            "9": "",
+            "10": "",
+            "11": "",
+            "12": "",
+            "13": "",
+            "14": "",
+            "15": "",
+            "16": "",
+            "17": "",
+            "18": "",
+            "19": "",
+            "20": "",
+            "21": "",
+            "22": "",
+            "23": ""
+          }
+        }
+      ]
+    }
+  ]
+}

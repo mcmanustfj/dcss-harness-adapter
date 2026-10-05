@@ -1,0 +1,247 @@
+{
+  "source": "Disposable more-cloud-check, Check, Dungeon:2 turn 971; public WebTiles events only. Gear -> Potions -> Scrolls.",
+  "frames": [
+    {
+      "input": {
+        "msg": "key",
+        "keycode": 105
+      },
+      "events": [
+        {
+          "msg": "input_mode",
+          "mode": 0
+        },
+        {
+          "msg": "menu",
+          "ui-centred": false,
+          "tag": "inventory",
+          "flags": 2368002,
+          "last_hovered": -1,
+          "title": {
+            "text": "<white>Gear: 3/52 gear slots    (Left/Right/Tab to switch category)"
+          },
+          "more": "<lightgrey>[<white>Up<lightgrey>|<white>Down<lightgrey>] select  [<white>PgDn<lightgrey>|<white>><lightgrey>] page down  [<white>PgUp<lightgrey>|<white><<<lightgrey>] page up  [<white>Esc<lightgrey>] exit<lightgrey>        <lightgrey>[<white>XXX<lightgrey>]<lightgrey>",
+          "alt_more": "",
+          "total_items": 5,
+          "chunk_start": 0,
+          "items": [
+            {
+              "text": "Hand Weapons   (go to first with <w>)</w><blue>)",
+              "colour": 1,
+              "level": 1
+            },
+            {
+              "text": " a - a +0 war axe (weapon)",
+              "q": 1,
+              "colour": 10,
+              "hotkeys": [
+                97,
+                41
+              ],
+              "level": 2,
+              "tiles": [
+                {
+                  "t": 5365,
+                  "tex": 4
+                },
+                {
+                  "t": 3769,
+                  "tex": 4
+                }
+              ]
+            },
+            {
+              "text": "Armour         (go to first with <w>[</w><blue>)",
+              "colour": 1,
+              "level": 1
+            },
+            {
+              "text": " b - a +0 scale mail (worn)",
+              "q": 1,
+              "colour": 10,
+              "hotkeys": [
+                98,
+                91
+              ],
+              "level": 2,
+              "tiles": [
+                {
+                  "t": 5365,
+                  "tex": 4
+                },
+                {
+                  "t": 3993,
+                  "tex": 4
+                }
+              ]
+            },
+            {
+              "text": " c - a +0 buckler (worn)",
+              "q": 1,
+              "colour": 10,
+              "hotkeys": [
+                99,
+                91
+              ],
+              "level": 2,
+              "tiles": [
+                {
+                  "t": 5365,
+                  "tex": 4
+                },
+                {
+                  "t": 4049,
+                  "tex": 4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input": {
+        "msg": "key",
+        "keycode": 9
+      },
+      "events": [
+        {
+          "msg": "update_menu",
+          "more": "<lightgrey>[<white>Up<lightgrey>|<white>Down<lightgrey>] select  [<white>PgDn<lightgrey>|<white>><lightgrey>] page down  [<white>PgUp<lightgrey>|<white><<<lightgrey>] page up  [<white>Esc<lightgrey>] exit<lightgrey>        <lightgrey>[<white>XXX<lightgrey>]<lightgrey>",
+          "alt_more": ""
+        },
+        {
+          "msg": "update_menu",
+          "total_items": 2,
+          "last_hovered": -1
+        },
+        {
+          "msg": "update_menu_items",
+          "chunk_start": 0,
+          "items": [
+            {
+              "text": "Potions        (go to first with <w>!</w><blue>)",
+              "colour": 1,
+              "level": 1
+            },
+            {
+              "text": " m - 2 potions of might",
+              "q": 2,
+              "hotkeys": [
+                109,
+                33
+              ],
+              "level": 2,
+              "tiles": [
+                {
+                  "t": 4374,
+                  "tex": 4
+                },
+                {
+                  "t": 4398,
+                  "tex": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "msg": "update_menu",
+          "title": {
+            "text": "<white>Potions:     (Left/Right/Tab to switch category)"
+          }
+        }
+      ]
+    },
+    {
+      "input": {
+        "msg": "key",
+        "keycode": 9
+      },
+      "events": [
+        {
+          "msg": "update_menu",
+          "more": "<lightgrey>[<white>Up<lightgrey>|<white>Down<lightgrey>] select  [<white>PgDn<lightgrey>|<white>><lightgrey>] page down  [<white>PgUp<lightgrey>|<white><<<lightgrey>] page up  [<white>Esc<lightgrey>] exit<lightgrey>        <lightgrey>[<white>XXX<lightgrey>]<lightgrey>",
+          "alt_more": ""
+        },
+        {
+          "msg": "update_menu",
+          "total_items": 4,
+          "last_hovered": -1
+        },
+        {
+          "msg": "update_menu_items",
+          "chunk_start": 0,
+          "items": [
+            {
+              "text": "Scrolls        (go to first with <w>?</w><blue>)",
+              "colour": 1,
+              "level": 1
+            },
+            {
+              "text": " i - a scroll of identify",
+              "q": 1,
+              "hotkeys": [
+                105,
+                63
+              ],
+              "level": 2,
+              "tiles": [
+                {
+                  "t": 4222,
+                  "tex": 4
+                },
+                {
+                  "t": 4223,
+                  "tex": 4
+                }
+              ]
+            },
+            {
+              "text": " t - a scroll of teleportation",
+              "q": 1,
+              "colour": 14,
+              "hotkeys": [
+                116,
+                63
+              ],
+              "level": 2,
+              "tiles": [
+                {
+                  "t": 4222,
+                  "tex": 4
+                },
+                {
+                  "t": 4224,
+                  "tex": 4
+                }
+              ]
+            },
+            {
+              "text": " e - a scroll labelled GUCOXU JIOSESK",
+              "q": 1,
+              "colour": 9,
+              "hotkeys": [
+                101,
+                63
+              ],
+              "level": 2,
+              "tiles": [
+                {
+                  "t": 4222,
+                  "tex": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "msg": "update_menu",
+          "title": {
+            "text": "<white>Scrolls:     (Left/Right/Tab to switch category)"
+          }
+        }
+      ]
+    }
+  ]
+}

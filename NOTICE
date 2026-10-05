@@ -1,0 +1,18 @@
+Dungeon Crawl Stone Soup is developed by the Crawl contributors.
+Upstream: https://github.com/crawl/crawl
+
+The generated crawl_protocol.json, crawl_features.json, crawl_equipment.json,
+and crawl_clouds.json tables describe public enum values, terrain names, and
+tile appearances from the revision recorded in crawl-version.json. Their
+generators read an external Crawl checkout; they do not read saved or live
+game state. Fixtures record public protocol observations for adapter tests.
+
+No Crawl source code, binary, tile images, or WebTiles client is distributed
+in this repository. The optional spectator imports the user's external stock
+WebTiles server and overlays its lobby renderer in a temporary directory.
+Crawl's license and contributor notices remain in that external distribution.
+
+The optional patch in patches/codex-replaceable-snapshots.patch targets OpenAI
+Codex and includes upstream code context. Its upstream Apache License 2.0 and
+notices are retained in patches/CODEX-LICENSE and patches/CODEX-NOTICE. The
+Codex checkout and compiled package remain external.

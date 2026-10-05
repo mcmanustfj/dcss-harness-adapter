@@ -1,0 +1,31 @@
+{
+  "description": "Synthetic public WebTiles map frames, using this checkout's tile IDs. Includes smoke/fog, flame animation variants, ambiguous steam, unknown tiles, remembered clouds, and disappearance.",
+  "frames": [
+    [
+      {"msg":"player","pos":{"x":0,"y":0}},
+      {"msg":"map","clear":true,"cells":[
+        {"x":0,"y":0,"f":33,"g":"@","t":{"bg":0}},
+        {"x":1,"y":0,"f":33,"g":".","t":{"bg":0}},
+        {"x":2,"y":0,"f":33,"g":"§","t":{"bg":0,"cloud":5269}},
+        {"x":2,"y":1,"f":33,"g":"§","t":{"bg":0,"cloud":5269}},
+        {"x":3,"y":1,"f":33,"g":"§","t":{"bg":0,"cloud":5269}},
+        {"x":3,"y":2,"f":33,"g":"§","t":{"bg":0,"cloud":5256}},
+        {"x":4,"y":2,"f":33,"g":"§","t":{"bg":0,"cloud":5258}},
+        {"x":0,"y":1,"f":33,"g":"§","t":{"bg":0,"cloud":5295}},
+        {"x":-1,"y":0,"f":33,"g":"§","t":{"bg":0,"cloud":5270}},
+        {"x":-2,"y":0,"f":33,"g":"§","t":{"bg":0,"cloud":65000}},
+        {"x":-2,"y":1,"f":33,"g":"§","t":{"bg":0,"cloud":65001}},
+        {"x":2,"y":-1,"f":33,"g":"§","t":{"bg":262144,"cloud":5269}}
+      ]}
+    ],
+    [
+      {"msg":"map","cells":[
+        {"x":2,"y":1,"t":{"bg":262144}},
+        {"x":3,"y":1,"g":".","t":{"cloud":0}},
+        {"x":3,"y":2,"g":".","t":{"cloud":0}},
+        {"x":4,"y":2,"g":".","t":{"cloud":0}}
+      ]}
+    ],
+    [{"msg":"map","clear":true}]
+  ]
+}

@@ -1,0 +1,15 @@
+# Copy to settings.ini beside crawl-agent. No Python dependencies are required.
+[crawl]
+# Paths are unquoted; ~ is expanded. Relative paths are relative to this file.
+# Existing DCSS executable, with WebTiles support and its runtime data installed.
+# Run ./crawl-agent doctor after setting this path to check its reported build.
+binary = /absolute/path/to/crawl
+
+# Optional: matching external crawl-ref/source directory, for the browser viewer
+# and developer metadata regeneration only. Leave commented out for CLI play.
+# source = /absolute/path/to/crawl-ref/source
+
+[output]
+# Plain JSON by default. Enable only for a Codex build with replaceable tool output.
+# Applies to JSON and --text output; changes take effect on the next CLI command.
+snapshot_tags = false

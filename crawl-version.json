@@ -1,0 +1,11 @@
+{
+  "repository": "https://github.com/crawl/crawl",
+  "revision": "7c31f6e79758706fc67dede5080d3270381f6fb4",
+  "metadata": [
+    "data/crawl_protocol.json",
+    "data/crawl_features.json",
+    "data/crawl_equipment.json",
+    "data/crawl_clouds.json"
+  ],
+  "version": "0.35-a0-1095-g7c31f6e797"
+}

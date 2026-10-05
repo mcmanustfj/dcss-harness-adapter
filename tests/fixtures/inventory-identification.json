@@ -1,0 +1,147 @@
+{
+  "description": "Public player.inv frames captured in more-cloud-check (Check the Fighter), scroll identification at turns 899-900. Includes original deltas lacking names and standard spectator refreshes. Hidden subtype/plus data omitted.",
+  "frames": [
+    {
+      "msg": "player",
+      "inv": {
+        "0": {
+          "base_type": 0,
+          "quantity": 1,
+          "flags": 536870913,
+          "letter": 97,
+          "name": "+0 war axe"
+        },
+        "52": {
+          "base_type": 7,
+          "quantity": 2,
+          "flags": 536870913,
+          "letter": 109,
+          "name": "2 potions of might"
+        },
+        "53": {
+          "base_type": 5,
+          "quantity": 2,
+          "flags": 536871424,
+          "letter": 99,
+          "name": "2 scrolls labelled ZICU XOPSIDOPN"
+        },
+        "54": {
+          "base_type": 5,
+          "quantity": 1,
+          "flags": 536871424,
+          "letter": 100,
+          "name": "scroll labelled ECLUARPHI WALLI"
+        },
+        "55": {
+          "base_type": 5,
+          "quantity": 1,
+          "flags": 536871424,
+          "letter": 101,
+          "name": "scroll labelled GUCOXU JIOSESK"
+        }
+      }
+    },
+    {
+      "msg": "player",
+      "inv": {
+        "53": {
+          "flags": 536871425
+        }
+      }
+    },
+    {
+      "msg": "player",
+      "inv": {
+        "0": {
+          "base_type": 0,
+          "quantity": 1,
+          "flags": 536870913,
+          "letter": 97,
+          "name": "+0 war axe"
+        },
+        "52": {
+          "base_type": 7,
+          "quantity": 2,
+          "flags": 536870913,
+          "letter": 109,
+          "name": "2 potions of might"
+        },
+        "53": {
+          "base_type": 5,
+          "quantity": 2,
+          "flags": 536871425,
+          "letter": 99,
+          "name": "2 scrolls of identify"
+        },
+        "54": {
+          "base_type": 5,
+          "quantity": 1,
+          "flags": 536871424,
+          "letter": 100,
+          "name": "scroll labelled ECLUARPHI WALLI"
+        },
+        "55": {
+          "base_type": 5,
+          "quantity": 1,
+          "flags": 536871424,
+          "letter": 101,
+          "name": "scroll labelled GUCOXU JIOSESK"
+        }
+      }
+    },
+    {
+      "msg": "player",
+      "inv": {
+        "53": {
+          "quantity": 1,
+          "letter": 105,
+          "name": "scroll of identify"
+        },
+        "54": {
+          "flags": 536871425,
+          "letter": 116
+        }
+      }
+    },
+    {
+      "msg": "player",
+      "inv": {
+        "0": {
+          "base_type": 0,
+          "quantity": 1,
+          "flags": 536870913,
+          "letter": 97,
+          "name": "+0 war axe"
+        },
+        "52": {
+          "base_type": 7,
+          "quantity": 2,
+          "flags": 536870913,
+          "letter": 109,
+          "name": "2 potions of might"
+        },
+        "53": {
+          "base_type": 5,
+          "quantity": 1,
+          "flags": 536871425,
+          "letter": 105,
+          "name": "scroll of identify"
+        },
+        "54": {
+          "base_type": 5,
+          "quantity": 1,
+          "flags": 536871425,
+          "letter": 116,
+          "name": "scroll of teleportation"
+        },
+        "55": {
+          "base_type": 5,
+          "quantity": 1,
+          "flags": 536871424,
+          "letter": 101,
+          "name": "scroll labelled GUCOXU JIOSESK"
+        }
+      }
+    }
+  ]
+}

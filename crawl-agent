@@ -1,0 +1,8 @@
+#!/bin/sh
+# Prefer the optional local environment used by the tiles spectator.
+CRAWL_AGENT_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+if [ -x "$CRAWL_AGENT_ROOT/.crawl-agent/venv/bin/python" ]; then
+    exec "$CRAWL_AGENT_ROOT/.crawl-agent/venv/bin/python" \
+        "$CRAWL_AGENT_ROOT/run.py" "$@"
+fi
+exec python3 "$CRAWL_AGENT_ROOT/run.py" "$@"

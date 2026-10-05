@@ -1,0 +1,58 @@
+{
+  "description": "First frame: public spectator player packet from default/Agent at turn16343, Doom45%, contamination0%, status empty. Subsequent protocol-shaped frames are synthetic regressions for gains, omitted unchanged fields and clearing; not claims about live play.",
+  "frames": [
+    {
+      "event": {
+        "msg": "player",
+        "penance": 0,
+        "ostracism_pips": 0,
+        "real_hp_max": 123,
+        "poison_survival": 123,
+        "doom": 45,
+        "doom_desc": "A malevolent fate is gathering around you. If your Doom reaches 100%, you will be afflicted by a random bane and your Doom will reset to 0. Banes have diverse negative effects that can significantly endanger your character for an extended period of time.\n\nBoth Doom and Banes are only cured by gaining experience, though Banes typically last much longer.\n",
+        "contam": 0,
+        "turn": 16343,
+        "status": []
+      },
+      "expected": {
+        "doom": 45,
+        "contam": 0,
+        "status": []
+      }
+    },
+    {
+      "event": {
+        "msg": "player",
+        "doom": 60,
+        "contam": 125
+      },
+      "expected": {
+        "doom": 60,
+        "contam": 125,
+        "status": []
+      }
+    },
+    {
+      "event": {
+        "msg": "player",
+        "doom": 30
+      },
+      "expected": {
+        "doom": 30,
+        "contam": 125
+      }
+    },
+    {
+      "event": {
+        "msg": "player",
+        "doom": 0,
+        "contam": 0
+      },
+      "expected": {
+        "doom": 0,
+        "contam": 0,
+        "doom_desc": "A malevolent fate is gathering around you. If your Doom reaches 100%, you will be afflicted by a random bane and your Doom will reset to 0. Banes have diverse negative effects that can significantly endanger your character for an extended period of time.\n\nBoth Doom and Banes are only cured by gaining experience, though Banes typically last much longer.\n"
+      }
+    }
+  ]
+}

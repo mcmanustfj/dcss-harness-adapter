@@ -1,0 +1,86 @@
+{
+  "description": "Public WebTiles events captured from disposable more-cloud-check, Check the Minotaur Fighter, with normal rc option force_more_message = .*. Each frame ends before an internally sent Space; maps and unrelated rendering events omitted, player fields limited to HP/turn. Crawl 0.35-a0-1095-g7c31f6e797.",
+  "frames": [
+    [
+      {
+        "msg": "exit_reason",
+        "type": "unknown"
+      },
+      {
+        "msg": "player",
+        "hp": 19,
+        "hp_max": 19,
+        "turn": 0
+      },
+      {
+        "msg": "msgs",
+        "more": true,
+        "messages": [
+          {
+            "text": "<yellow>Welcome back, Check the Minotaur Fighter.<lightgrey>",
+            "turn": 0,
+            "channel": 0
+          }
+        ]
+      },
+      {
+        "msg": "input_mode",
+        "mode": 5
+      }
+    ],
+    [
+      {
+        "msg": "input_mode",
+        "mode": 0
+      },
+      {
+        "msg": "msgs",
+        "messages": [
+          {
+            "text": "<white>Game seed: 12345 (custom seed)<lightgrey>",
+            "turn": 0,
+            "channel": 0
+          }
+        ]
+      },
+      {
+        "msg": "input_mode",
+        "mode": 5
+      }
+    ],
+    [
+      {
+        "msg": "input_mode",
+        "mode": 0
+      },
+      {
+        "msg": "msgs",
+        "messages": [
+          {
+            "text": "<lightgrey>Press <white>?<lightgrey> for a list of commands and other information.",
+            "turn": 0,
+            "channel": 0
+          }
+        ]
+      },
+      {
+        "msg": "input_mode",
+        "mode": 5
+      }
+    ],
+    [
+      {
+        "msg": "input_mode",
+        "mode": 0
+      },
+      {
+        "msg": "msgs",
+        "more": false
+      },
+      {
+        "msg": "input_mode",
+        "mode": 1
+      }
+    ]
+  ]
+}

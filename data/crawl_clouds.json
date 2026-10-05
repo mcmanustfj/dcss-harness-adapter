@@ -1,0 +1,418 @@
+{
+  "5256": {
+    "name": "flame",
+    "cloud_type": "fire"
+  },
+  "5257": {
+    "name": "flame",
+    "cloud_type": "fire"
+  },
+  "5258": {
+    "name": "flame",
+    "cloud_type": "fire"
+  },
+  "5259": {
+    "name": "freezing vapour",
+    "cloud_type": "cold"
+  },
+  "5260": {
+    "name": "freezing vapour",
+    "cloud_type": "cold"
+  },
+  "5261": {
+    "name": "freezing vapour",
+    "cloud_type": "cold"
+  },
+  "5262": {
+    "name": "poison gas",
+    "cloud_type": "poison"
+  },
+  "5263": {
+    "name": "poison gas",
+    "cloud_type": "poison"
+  },
+  "5264": {
+    "name": "poison gas",
+    "cloud_type": "poison"
+  },
+  "5265": {
+    "name": "noxious fumes",
+    "cloud_type": "mephitic"
+  },
+  "5266": {
+    "name": "noxious fumes",
+    "cloud_type": "mephitic"
+  },
+  "5267": {
+    "name": "noxious fumes",
+    "cloud_type": "mephitic"
+  },
+  "5268": {
+    "name": "black smoke or smouldering embers",
+    "cloud_type": "unknown",
+    "possible_types": [
+      "black_smoke",
+      "embers"
+    ]
+  },
+  "5269": {
+    "name": "blue smoke",
+    "cloud_type": "blue_smoke"
+  },
+  "5270": {
+    "name": "grey smoke or steam",
+    "cloud_type": "unknown",
+    "possible_types": [
+      "grey_smoke",
+      "steam"
+    ]
+  },
+  "5271": {
+    "name": "blessed fire",
+    "cloud_type": "holy"
+  },
+  "5272": {
+    "name": "white fluffiness or salt",
+    "cloud_type": "unknown",
+    "possible_types": [
+      "fluffy",
+      "salt"
+    ]
+  },
+  "5273": {
+    "name": "foul pestilence",
+    "cloud_type": "miasma"
+  },
+  "5274": {
+    "name": "foul pestilence",
+    "cloud_type": "miasma"
+  },
+  "5275": {
+    "name": "foul pestilence",
+    "cloud_type": "miasma"
+  },
+  "5276": {
+    "name": "purple smoke or translocational energy",
+    "cloud_type": "unknown",
+    "possible_types": [
+      "purple_smoke",
+      "tloc_energy"
+    ]
+  },
+  "5277": {
+    "name": "mutagenic fog",
+    "cloud_type": "mutagenic"
+  },
+  "5278": {
+    "name": "mutagenic fog",
+    "cloud_type": "mutagenic"
+  },
+  "5279": {
+    "name": "mutagenic fog",
+    "cloud_type": "mutagenic"
+  },
+  "5280": {
+    "name": "mutagenic fog",
+    "cloud_type": "mutagenic"
+  },
+  "5281": {
+    "name": "mutagenic fog",
+    "cloud_type": "mutagenic"
+  },
+  "5282": {
+    "name": "mutagenic fog",
+    "cloud_type": "mutagenic"
+  },
+  "5283": {
+    "name": "mutagenic fog",
+    "cloud_type": "mutagenic"
+  },
+  "5284": {
+    "name": "mutagenic fog",
+    "cloud_type": "mutagenic"
+  },
+  "5285": {
+    "name": "magical condensation",
+    "cloud_type": "unknown",
+    "possible_types": [
+      "magic_trail",
+      "xom_trail"
+    ]
+  },
+  "5286": {
+    "name": "magical condensation",
+    "cloud_type": "unknown",
+    "possible_types": [
+      "magic_trail",
+      "xom_trail"
+    ]
+  },
+  "5287": {
+    "name": "magical condensation",
+    "cloud_type": "unknown",
+    "possible_types": [
+      "magic_trail",
+      "xom_trail"
+    ]
+  },
+  "5288": {
+    "name": "magical condensation",
+    "cloud_type": "unknown",
+    "possible_types": [
+      "magic_trail",
+      "xom_trail"
+    ]
+  },
+  "5289": {
+    "name": "sparse dust",
+    "cloud_type": "dust"
+  },
+  "5290": {
+    "name": "sparse dust",
+    "cloud_type": "dust"
+  },
+  "5291": {
+    "name": "sparse dust",
+    "cloud_type": "dust"
+  },
+  "5292": {
+    "name": "sparse dust",
+    "cloud_type": "dust"
+  },
+  "5293": {
+    "name": "rain",
+    "cloud_type": "rain"
+  },
+  "5294": {
+    "name": "rain",
+    "cloud_type": "rain"
+  },
+  "5295": {
+    "name": "thin mist",
+    "cloud_type": "mist"
+  },
+  "5296": {
+    "name": "ink",
+    "cloud_type": "ink"
+  },
+  "5297": {
+    "name": "gloom",
+    "cloud_type": "gloom"
+  },
+  "5298": {
+    "name": "seething chaos",
+    "cloud_type": "chaos"
+  },
+  "5299": {
+    "name": "seething chaos",
+    "cloud_type": "chaos"
+  },
+  "5300": {
+    "name": "seething chaos",
+    "cloud_type": "chaos"
+  },
+  "5301": {
+    "name": "seething chaos",
+    "cloud_type": "chaos"
+  },
+  "5302": {
+    "name": "seething chaos",
+    "cloud_type": "chaos"
+  },
+  "5303": {
+    "name": "whirling frost",
+    "cloud_type": "vortex"
+  },
+  "5304": {
+    "name": "whirling frost",
+    "cloud_type": "vortex"
+  },
+  "5305": {
+    "name": "calcifying dust",
+    "cloud_type": "petrify"
+  },
+  "5306": {
+    "name": "calcifying dust",
+    "cloud_type": "petrify"
+  },
+  "5307": {
+    "name": "calcifying dust",
+    "cloud_type": "petrify"
+  },
+  "5308": {
+    "name": "calcifying dust",
+    "cloud_type": "petrify"
+  },
+  "5309": {
+    "name": "spreading flames",
+    "cloud_type": "forest_fire"
+  },
+  "5310": {
+    "name": "spectral mist",
+    "cloud_type": "spectral"
+  },
+  "5311": {
+    "name": "spectral mist",
+    "cloud_type": "spectral"
+  },
+  "5312": {
+    "name": "spectral mist",
+    "cloud_type": "spectral"
+  },
+  "5313": {
+    "name": "acidic fog",
+    "cloud_type": "acid"
+  },
+  "5314": {
+    "name": "acidic fog",
+    "cloud_type": "acid"
+  },
+  "5315": {
+    "name": "acidic fog",
+    "cloud_type": "acid"
+  },
+  "5316": {
+    "name": "thunder",
+    "cloud_type": "storm"
+  },
+  "5317": {
+    "name": "thunder",
+    "cloud_type": "storm"
+  },
+  "5318": {
+    "name": "excruciating misery",
+    "cloud_type": "misery"
+  },
+  "5319": {
+    "name": "excruciating misery",
+    "cloud_type": "misery"
+  },
+  "5320": {
+    "name": "excruciating misery",
+    "cloud_type": "misery"
+  },
+  "5321": {
+    "name": "golden dust",
+    "cloud_type": "gold_dust"
+  },
+  "5322": {
+    "name": "golden dust",
+    "cloud_type": "gold_dust"
+  },
+  "5323": {
+    "name": "golden dust",
+    "cloud_type": "gold_dust"
+  },
+  "5324": {
+    "name": "golden dust",
+    "cloud_type": "gold_dust"
+  },
+  "5325": {
+    "name": "wisps of flame",
+    "cloud_type": "flame"
+  },
+  "5326": {
+    "name": "wisps of flame",
+    "cloud_type": "flame"
+  },
+  "5327": {
+    "name": "wisps of flame",
+    "cloud_type": "flame"
+  },
+  "5328": {
+    "name": "wisps of flame",
+    "cloud_type": "flame"
+  },
+  "5329": {
+    "name": "sparks",
+    "cloud_type": "electricity"
+  },
+  "5330": {
+    "name": "sparks",
+    "cloud_type": "electricity"
+  },
+  "5331": {
+    "name": "sparks",
+    "cloud_type": "electricity"
+  },
+  "5332": {
+    "name": "sparks",
+    "cloud_type": "electricity"
+  },
+  "5333": {
+    "name": "faint pestilence",
+    "cloud_type": "faint_miasma"
+  },
+  "5334": {
+    "name": "faint pestilence",
+    "cloud_type": "faint_miasma"
+  },
+  "5335": {
+    "name": "faint pestilence",
+    "cloud_type": "faint_miasma"
+  },
+  "5336": {
+    "name": "faint pestilence",
+    "cloud_type": "faint_miasma"
+  },
+  "5337": {
+    "name": "alcoholic mist",
+    "cloud_type": "alcohol"
+  },
+  "5338": {
+    "name": "blastmotes",
+    "cloud_type": "blastmotes"
+  },
+  "5339": {
+    "name": "blastmotes",
+    "cloud_type": "blastmotes"
+  },
+  "5340": {
+    "name": "blastmotes",
+    "cloud_type": "blastmotes"
+  },
+  "5341": {
+    "name": "magnetised fragments",
+    "cloud_type": "magnetised_dust"
+  },
+  "5342": {
+    "name": "magnetised fragments",
+    "cloud_type": "magnetised_dust"
+  },
+  "5343": {
+    "name": "magnetised fragments",
+    "cloud_type": "magnetised_dust"
+  },
+  "5344": {
+    "name": "bats",
+    "cloud_type": "bats"
+  },
+  "5345": {
+    "name": "bats",
+    "cloud_type": "bats"
+  },
+  "5346": {
+    "name": "bats",
+    "cloud_type": "bats"
+  },
+  "5347": {
+    "name": "bats",
+    "cloud_type": "bats"
+  },
+  "5348": {
+    "name": "rust",
+    "cloud_type": "rust"
+  },
+  "5349": {
+    "name": "rust",
+    "cloud_type": "rust"
+  },
+  "5350": {
+    "name": "rust",
+    "cloud_type": "rust"
+  },
+  "5351": {
+    "name": "rust",
+    "cloud_type": "rust"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "source": "Amaemon flavour line reported in live D:10 turn 12048 and present in dat/database/monspeak.txt. Other examples cover public combat messages/templates; these are message regressions, not a captured full protocol transcript.",
+  "cases": [
+    {"text": "Something foul drips from Amaemon's claws.", "unseen": false},
+    {"text": "<lightgrey>Something foul drips from Amaemon's claws.<lightgrey>", "unseen": false},
+    {"text": "Something foul drips from the demon's claws.", "unseen": false},
+    {"text": "Something moves nearby.", "unseen": false},
+    {"text": "You feel a strong urge to attack something.", "unseen": false},
+    {"text": "You closely miss something.", "unseen": false},
+    {"text": "Something's claws drip venom.", "unseen": false},
+    {"text": "Amaemon hits you with a demon whip of venom.", "unseen": false},
+    {"text": "Amaemon says, \"Something hits you.\"", "unseen": false},
+    {"text": "Something hits you!", "unseen": true},
+    {"text": "<lightred>Something hits you.<lightgrey>", "unseen": true},
+    {"text": "Something bites you but does no damage.", "unseen": true},
+    {"text": "Something claws you.", "unseen": true},
+    {"text": "Something misses you.", "unseen": true},
+    {"text": "Something barely misses you. x2", "unseen": true},
+    {"text": "Something closely misses you.", "unseen": true},
+    {"text": "Something completely misses you.", "unseen": true},
+    {"text": "Something unseen stings you.", "unseen": true},
+    {"text": "An unseen horror hits you.", "unseen": true},
+    {"text": "An invisible orc wizard hits you.", "unseen": true},
+    {"text": "The invisible orc wizard hits you but does no damage.", "unseen": true},
+    {"text": "Something casts a spell.", "unseen": true},
+    {"text": "Something shoots an arrow.", "unseen": true},
+    {"text": "You are hit by an arrow!", "unseen": true},
+    {"text": "You block something's attack.", "unseen": true},
+    {"text": "Something foul drips from Amaemon's claws. Something hits you!", "unseen": true}
+  ]
+}

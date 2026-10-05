@@ -1,0 +1,6 @@
+{
+  "repository": "https://github.com/openai/codex",
+  "base_revision": "b1e72963c3b71a9265a551e54beff078384efed9",
+  "patch": "codex-replaceable-snapshots.patch",
+  "sha256": "4997649b9375b1d64cce3e07514effb2401951b36776f6250a79b2ea8a2e1bed"
+}
